@@ -1,23 +1,34 @@
+import project1 from '../assets/react.svg';
+import project2 from '../assets/react.svg';
+
+const projects = [
+  {
+    img: project1,
+    title: "React App",
+    desc: "A modern React application using hooks and components.",
+    link: "#"
+  },
+  {
+    img: project2,
+    title: "SVG Demo",
+    desc: "A project showcasing SVG graphics in React.",
+    link: "#"
+  }
+];
+
 export default function Projects() {
   return (
     <section className="projects">
-      <div className="container">
-        <div className="project-text">
-            <h2>LATEST PROJECTS</h2>
-            <p>
-            Sed eu turpis vehicula, iaculis sapien eu, molestie libero. Cras ac urna in magna commodo sodales vel et dolor.
-            </p>
-            <p>
-            Nunc eget velit nec felis ultrices vulputate venenatis interdum arcu. In ac auctor quam.
-            </p>
-            <a href="#" className="btn">CONTINUE JOURNAL</a>
-        </div>
-        <div className="project-grid">
-            <img src="https://source.unsplash.com/300x200/?mountain" alt="Project 1" />
-            <div className="project-box">PROJECT | TWO</div>
-            <img src="https://source.unsplash.com/300x200/?beach" alt="Project 3" />
-            <img src="https://source.unsplash.com/300x200/?workspace" alt="Project 4" />
-        </div>
+      <h2 style={{ width: "100%", textAlign: "center" }}>My Projects</h2>
+      <div className="project-grid">
+        {projects.map((proj, idx) => (
+          <div className="project-card" key={idx}>
+            <img src={proj.img} alt={proj.title} className="project-img" />
+            <h3>{proj.title}</h3>
+            <p>{proj.desc}</p>
+            <a className="btn" href={proj.link}>View Project</a>
+          </div>
+        ))}
       </div>
     </section>
   );
