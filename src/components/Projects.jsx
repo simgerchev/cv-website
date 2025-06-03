@@ -18,7 +18,7 @@ const projects = [
 
 export default function Projects() {
   return (
-    <section className="projects">
+    <section className="projects" id="projects">
       <h2 style={{ width: "100%", textAlign: "center" }}>My Projects</h2>
       <div className="project-grid">
         {projects.map((proj, idx) => (

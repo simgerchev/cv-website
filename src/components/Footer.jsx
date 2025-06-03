@@ -3,13 +3,12 @@ export default function Footer() {
     <footer>
     <div className="container">
         <div className="social">
-            <a href="#">FACEBOOK</a>
-            <a href="#">TWITTER</a>
+            <a href="#">LINKEDIN</a>
+            <a href="#">GITHUB</a>
             <a href="#">INSTAGRAM</a>
         </div>
         <p>
-            Copyright © 2018 <strong>Company Name</strong><br />
-            Design: <a href="#">templatemo</a>
+            Copyright © 2025 <strong>Simeon Gerchev</strong><br />
         </p>
       </div>
     </footer>

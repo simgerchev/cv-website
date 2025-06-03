@@ -7,9 +7,8 @@ export default function Header() {
         <img src={WhiteLogo} alt="Logo" className="logo-img" />
         <nav>
           <a className="active" href="#">HOME</a>
-          <a href="#">ABOUT US</a>
-          <a href="#">PROJECTS</a>
-          <a href="#">BLOG ENTRIES</a>
+          <a href="#">INTRO</a>
+          <a href="#projects">PROJECTS</a>
           <a href="#">CONTACT</a>
         </nav>
       </div>
