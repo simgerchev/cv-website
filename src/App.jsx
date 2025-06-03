@@ -4,6 +4,7 @@ import Intro from './components/Intro';
 import LottieAnimation from './components/LottieAnimation';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
+import BibleVerse from './components/BibleVerse';
 import Footer from './components/Footer';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <LottieAnimation />
       <Skills />
       <Projects />
+      <BibleVerse />
       <Footer />
     </div>
   );

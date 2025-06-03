@@ -29,7 +29,7 @@ export default function Intro() {
         I’m passionate about <span className="intro-highlight">programming</span>, but I’m also very interested in <span className="intro-highlight">IT infrastructure</span>, <span className="intro-highlight">cybersecurity</span>, and <span className="intro-highlight">DevOps</span>.
       </p>
       <div className="icons">
-        <span>🏆</span><span>👾</span><span>🪄</span><span>💻</span>
+        <span>🌊</span><span>🌊</span><span>🌊</span><span>🌊</span>
       </div>
     </section>
   );

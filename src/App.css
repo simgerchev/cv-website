@@ -342,6 +342,94 @@ nav a:hover {
 }
 
 /* =========================
+   Bible Verse Card
+   ========================= */
+.bible-verse-card {
+  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color: #fff;
+  border-radius: 16px;
+  padding: 28px 24px 18px 24px;
+  margin: 32px auto;
+  max-width: 480px;
+  box-shadow: 0 4px 24px rgba(51,134,255,0.12);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  text-align: center;
+  position: relative;
+}
+
+.bible-verse-card.fancy {
+  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color: #fff;
+  border-radius: 20px;
+  padding: 36px 28px 24px 28px;
+  margin: 40px auto;
+  max-width: 520px;
+  box-shadow: 0 8px 32px rgba(51,134,255,0.18);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  text-align: center;
+  position: relative;
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px);}
+  to   { opacity: 1; transform: translateY(0);}
+}
+
+.bible-verse-quote-icon {
+  font-size: 2.8rem;
+  opacity: 0.18;
+  position: absolute;
+  top: 18px;
+  left: 24px;
+  pointer-events: none;
+}
+
+.bible-verse-text {
+  font-size: 1.35rem;
+  font-style: italic;
+  margin: 0 0 18px 0;
+  line-height: 1.7;
+  letter-spacing: 0.2px;
+  padding: 0 18px;
+}
+
+.bible-verse-ref {
+  font-size: 1.05rem;
+  color: #e0eaff;
+  opacity: 0.85;
+  letter-spacing: 1px;
+  margin-top: 8px;
+}
+
+.bible-verse-loading {
+  color: #e0eaff;
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.bible-verse-refresh {
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  background: rgba(255,255,255,0.10);
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bible-verse-refresh:hover {
+  background: rgba(255,255,255,0.22);
+}
+
+/* =========================
    Footer
    ========================= */
 footer {

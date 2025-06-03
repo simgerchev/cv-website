@@ -14,7 +14,7 @@ const projects = [
     desc: "A project showcasing SVG graphics in React.",
     tech: ["SVG", "React"],
     link: "#"
-  }
+  },
 ];
 
 export default function Projects() {
