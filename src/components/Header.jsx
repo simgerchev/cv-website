@@ -4,7 +4,7 @@ export default function Header() {
   return (
     <header>
       <div className="container">
-        <img src={WhiteLogo} alt="Logo" className="logo-img" width="150px"/>
+        <img src={WhiteLogo} alt="Logo" className="logo-img" />
         <nav>
           <a className="active" href="#">HOME</a>
           <a href="#">ABOUT US</a>
