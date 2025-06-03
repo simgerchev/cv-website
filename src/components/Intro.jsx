@@ -20,15 +20,16 @@ export default function Intro() {
 
   return (
     <section className="intro">
-      <h1>
+      <h1 className="intro-title">
         <span ref={typedRef}></span>
       </h1>
-      <p>
-        Raleway HTML5 template is provided by <a href="#">templatemo</a>. Credit goes to <a href="#">Unsplash</a> for photos.
-        Feel free to modify and use this layout for any personal or commercial website.
+      <p className="intro-lead">
+        My name is <span className="intro-name">Simeon</span>, I’m 24 years old and I have completed two vocational trainings in IT: 
+        one as an IT Specialist with a focus on Multimedia, and another as an IT Specialist in Application Development.<br />
+        I’m passionate about <span className="intro-highlight">programming</span>, but I’m also very interested in <span className="intro-highlight">IT infrastructure</span>, <span className="intro-highlight">cybersecurity</span>, and <span className="intro-highlight">DevOps</span>.
       </p>
       <div className="icons">
-        <span>🏆</span><span>🎖️</span><span>🪄</span><span>💬</span>
+        <span>🏆</span><span>👾</span><span>🪄</span><span>💻</span>
       </div>
     </section>
   );

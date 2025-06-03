@@ -1,14 +1,13 @@
-/* =========================
-   Root Variables & Resets
-   ========================= */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
 :root {
-  --accent: #00bcd4;
-  --accent-dark: #0097a7;
+  --accent: #3386ff;
+  --accent-dark: #2563c9;
   --bg: #181a20;
-  --bg-header: #23263a;
-  --text: #f3f6fa;
-  --text-secondary: #b0b8c1;
-  font-family: 'Raleway', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --bg-header: #23272a;
+  --text: #ffffff;
+  --text-secondary: #7d868c;
+  --gray: #495057;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
@@ -16,69 +15,33 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-/* =========================
-   Global Layout & Typography
-   ========================= */
+.app {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
 html, body, #root {
   height: 100%;
   min-height: 100vh;
 }
-
 body {
   margin: 0;
   font-family: inherit;
   background: var(--bg);
   color: var(--text);
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  overflow-x: hidden;
   min-width: 320px;
   min-height: 100vh;
 }
 
-/* =========================
-   Headings & Buttons
-   ========================= */
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-/* Button styles */
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #00bcd4;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-/* =========================
-   Links
-   ========================= */
 a {
   color: #00bcd4;
   text-decoration: none;
 }
-a:hover {
-  color: #00bcd4;
-}
 
-/* =========================
-   Header & Navigation
-   ========================= */
 header {
-  background: #23263a;
+  background: #1e2124;
   padding: 20px 20px;
 }
 
@@ -96,50 +59,69 @@ header {
 .logo {
   font-size: 24px;
   font-weight: bold;
-  color: #00bcd4;
+  color: var(--accent);
 }
 
 nav a {
   margin-left: 20px;
-  color: #b0b8c1;
-  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  letter-spacing: 1px;
 }
 
 nav a.active,
 nav a:hover {
-  color: #00bcd4;
-  border-bottom: 2px solid #00bcd4;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
 }
 
-/* =========================
-   Intro Section
-   ========================= */
+/* Intro Section Typography */
 .intro {
   text-align: center;
   padding: 60px 20px;
 }
 
-.intro h1 {
-  font-weight: 300;
-  font-size: 36px;
-  margin-bottom: 20px;
-  color: #00bcd4;
+.intro-title {
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
 }
 
-.intro p {
+.intro-lead {
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  color: var(--text-secondary);
   max-width: 600px;
-  margin: 0 auto 30px;
-  color: #b0b8c1;
+  margin: 0 auto 32px auto;
+  line-height: 1.7;
+}
+
+.intro-name {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.intro-highlight {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.icons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 18px;
 }
 
 .icons span {
-  font-size: 24px;
-  margin: 0 15px;
+  font-size: 1.7rem;
 }
 
-/* =========================
-   Projects Section
-   ========================= */
 .projects {
   display: flex;
   flex-wrap: wrap;
@@ -149,19 +131,16 @@ nav a:hover {
   box-sizing: border-box;
   justify-content: center; /* Center content if not filling all space */
 }
-
 .project-text {
   flex: 1;
   min-width: 250px;
 }
-
 .project-text, .project-grid {
   flex: 1 1 300px;        /* Allow to shrink/grow, min width 300px */
   min-width: 250px;
   max-width: 600px;       /* Prevent from getting too wide on large screens */
   box-sizing: border-box;
 }
-
 .project-text h2 {
   font-size: 22px;
   margin-bottom: 20px;
@@ -172,29 +151,30 @@ nav a:hover {
   color: #aaa;
 }
 
-/* Project Button */
 .btn {
-  background: #00bcd4;
+  background: var(--accent);
   padding: 10px 20px;
   display: inline-block;
   margin-top: 10px;
-  color: #181a20;
+  color: var(--bg-header);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
+
 .btn:hover {
-  background: #0097a7;
+  background: var(--accent-dark);
   color: #fff;
 }
 
-/* Project Grid & Cards */
 .project-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   width: 100%;
 }
-
 .project-card {
-  background: #23263a;
+  background: var(--bg-header);
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
   padding: 24px 20px;
@@ -203,8 +183,8 @@ nav a:hover {
   flex-direction: column;
   align-items: center;
   transition: transform 0.15s, box-shadow 0.15s;
-  color: #f3f6fa;
 }
+
 
 .project-grid img,
 .project-box {
@@ -214,40 +194,22 @@ nav a:hover {
 }
 
 .project-box {
-  background: #ab47bc;
+  background: var(--gray);
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
+  color: var(--text);
 }
 
-/* =========================
-   Footer
-   ========================= */
 footer {
   text-align: center;
   padding: 40px 20px;
-  background: #1e2124;
-  color: #999;
+  background: var(--bg-header);
+  color: var(--text-secondary);
 }
 
 footer .social a {
   margin: 0 10px;
   color: #ccc;
-}
-
-/* =========================
-   Light Mode (Optional)
-   ========================= */
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #00bcd4;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }
