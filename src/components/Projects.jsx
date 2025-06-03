@@ -13,7 +13,7 @@ const projects = [
 export default function Projects() {
   return (
     <section className="projects" id="projects">
-      <h2 style={{ width: "100%", textAlign: "center" }}>My Projects / Github For More</h2>
+      <h2 style={{ width: "100%", textAlign: "center" }}>My Projects / More on Github</h2>
       <div className="project-grid">
         {projects.map((proj, idx) => (
           <div className="project-card" key={idx}>
