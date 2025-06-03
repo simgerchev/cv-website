@@ -1,4 +1,8 @@
+/* =========================
+   Imports & Root Variables
+   ========================= */
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
+
 :root {
   --accent: #3386ff;
   --accent-dark: #2563c9;
@@ -15,19 +19,26 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* =========================
+   Global Layout & Typography
+   ========================= */
 .app {
   min-height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
 }
+
 html {
   scroll-behavior: smooth;
 }
+
 html, body, #root {
   height: 100%;
   min-height: 100vh;
 }
+
 body {
   margin: 0;
   font-family: inherit;
@@ -38,11 +49,17 @@ body {
   min-height: 100vh;
 }
 
+/* =========================
+   Links
+   ========================= */
 a {
   color: #00bcd4;
   text-decoration: none;
 }
 
+/* =========================
+   Header & Navigation
+   ========================= */
 header {
   background: #1e2124;
   padding: 20px 50px;
@@ -98,7 +115,9 @@ nav a:hover {
   border-bottom: 2px solid var(--accent);
 }
 
-/* Intro Section Typography */
+/* =========================
+   Intro Section
+   ========================= */
 .intro {
   text-align: center;
   padding: 60px 20px;
@@ -144,25 +163,31 @@ nav a:hover {
   font-size: 1.7rem;
 }
 
+/* =========================
+   Projects Section
+   ========================= */
 .projects {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 40px 20px;    /* Add horizontal padding for breathing room */
+  padding: 40px 20px;
   width: 100%;
   box-sizing: border-box;
-  justify-content: center; /* Center content if not filling all space */
+  justify-content: center;
 }
+
 .project-text {
   flex: 1;
   min-width: 250px;
 }
+
 .project-text, .project-grid {
-  flex: 1 1 300px;        /* Allow to shrink/grow, min width 300px */
+  flex: 1 1 300px;
   min-width: 250px;
-  max-width: 600px;       /* Prevent from getting too wide on large screens */
+  max-width: 600px;
   box-sizing: border-box;
 }
+
 .project-text h2 {
   font-size: 22px;
   margin-bottom: 20px;
@@ -196,6 +221,7 @@ nav a:hover {
   width: 100%;
   box-sizing: border-box;
 }
+
 .project-card {
   background: var(--bg-header);
   border-radius: 12px;
@@ -208,6 +234,45 @@ nav a:hover {
   transition: transform 0.15s, box-shadow 0.15s;
 }
 
+.project-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+.project-title {
+  font-size: 1.2rem;
+  color: var(--accent);
+  margin: 10px 0 6px 0;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+}
+
+.project-desc {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.project-techstack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.tech-badge {
+  background: var(--gray);
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  letter-spacing: 0.5px;
+}
 
 .project-grid img,
 .project-box {
@@ -225,6 +290,60 @@ nav a:hover {
   color: var(--text);
 }
 
+/* =========================
+   Skills Section
+   ========================= */
+.skills {
+  margin: 40px auto;
+  max-width: 700px;
+  padding: 40px 20px;
+  background: var(--bg-header);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+
+.skills-title {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--accent);
+  margin-bottom: 32px;
+  letter-spacing: 2px;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+}
+
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.skill-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+}
+
+.skill-bar-bg {
+  background: var(--gray);
+  border-radius: 8px;
+  height: 16px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.skill-bar {
+  background: var(--accent);
+  height: 100%;
+  border-radius: 8px 0 0 8px;
+  transition: width 0.7s cubic-bezier(.4,2.08,.55,.44);
+}
+
+/* =========================
+   Footer
+   ========================= */
 footer {
   text-align: center;
   padding: 40px 20px;
@@ -237,7 +356,38 @@ footer .social a {
   color: #ccc;
 }
 
-/* Responsive adjustments */
+/* =========================
+   Currently Learning Highlight
+   ========================= */
+.currently-learning {
+  margin: 36px auto 0 auto;
+  padding: 18px 24px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color: #fff;
+  border-radius: 12px;
+  font-size: 1.15rem;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 420px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+  from { box-shadow: 0 2px 12px rgba(51,134,255,0.10);}
+  to   { box-shadow: 0 4px 24px rgba(51,134,255,0.25);}
+}
+
+.currently-learning-text strong {
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+/* =========================
+   Responsive Adjustments
+   ========================= */
 @media (max-width: 800px) {
   header .container {
     flex-direction: column;
