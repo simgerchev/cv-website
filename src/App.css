@@ -1,28 +1,84 @@
-.app {
-  min-height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
+/* =========================
+   Root Variables & Resets
+   ========================= */
+:root {
+  --accent: #00bcd4;
+  --accent-dark: #0097a7;
+  --bg: #181a20;
+  --bg-header: #23263a;
+  --text: #f3f6fa;
+  --text-secondary: #b0b8c1;
+  font-family: 'Raleway', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* =========================
+   Global Layout & Typography
+   ========================= */
 html, body, #root {
   height: 100%;
   min-height: 100vh;
 }
+
 body {
   margin: 0;
-  font-family: 'Raleway', sans-serif;
-  background: #2c2f33;
-  color: #fff;
+  font-family: inherit;
+  background: var(--bg);
+  color: var(--text);
   overflow-x: hidden; /* Prevent horizontal scroll */
+  min-width: 320px;
+  min-height: 100vh;
 }
 
+/* =========================
+   Headings & Buttons
+   ========================= */
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+/* Button styles */
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #00bcd4;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* =========================
+   Links
+   ========================= */
 a {
   color: #00bcd4;
   text-decoration: none;
 }
+a:hover {
+  color: #00bcd4;
+}
 
+/* =========================
+   Header & Navigation
+   ========================= */
 header {
-  background: #1e2124;
+  background: #23263a;
   padding: 20px 20px;
 }
 
@@ -40,11 +96,12 @@ header {
 .logo {
   font-size: 24px;
   font-weight: bold;
+  color: #00bcd4;
 }
 
 nav a {
   margin-left: 20px;
-  color: #ccc;
+  color: #b0b8c1;
   text-transform: uppercase;
 }
 
@@ -54,6 +111,9 @@ nav a:hover {
   border-bottom: 2px solid #00bcd4;
 }
 
+/* =========================
+   Intro Section
+   ========================= */
 .intro {
   text-align: center;
   padding: 60px 20px;
@@ -63,12 +123,13 @@ nav a:hover {
   font-weight: 300;
   font-size: 36px;
   margin-bottom: 20px;
+  color: #00bcd4;
 }
 
 .intro p {
   max-width: 600px;
   margin: 0 auto 30px;
-  color: #bbb;
+  color: #b0b8c1;
 }
 
 .icons span {
@@ -76,6 +137,9 @@ nav a:hover {
   margin: 0 15px;
 }
 
+/* =========================
+   Projects Section
+   ========================= */
 .projects {
   display: flex;
   flex-wrap: wrap;
@@ -85,16 +149,19 @@ nav a:hover {
   box-sizing: border-box;
   justify-content: center; /* Center content if not filling all space */
 }
+
 .project-text {
   flex: 1;
   min-width: 250px;
 }
+
 .project-text, .project-grid {
   flex: 1 1 300px;        /* Allow to shrink/grow, min width 300px */
   min-width: 250px;
   max-width: 600px;       /* Prevent from getting too wide on large screens */
   box-sizing: border-box;
 }
+
 .project-text h2 {
   font-size: 22px;
   margin-bottom: 20px;
@@ -105,22 +172,29 @@ nav a:hover {
   color: #aaa;
 }
 
+/* Project Button */
 .btn {
-  background: #ba68c8;
+  background: #00bcd4;
   padding: 10px 20px;
   display: inline-block;
   margin-top: 10px;
-  color: white;
+  color: #181a20;
+}
+.btn:hover {
+  background: #0097a7;
+  color: #fff;
 }
 
+/* Project Grid & Cards */
 .project-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   width: 100%;
 }
+
 .project-card {
-  background: #23272a;
+  background: #23263a;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
   padding: 24px 20px;
@@ -129,8 +203,8 @@ nav a:hover {
   flex-direction: column;
   align-items: center;
   transition: transform 0.15s, box-shadow 0.15s;
+  color: #f3f6fa;
 }
-
 
 .project-grid img,
 .project-box {
@@ -147,6 +221,9 @@ nav a:hover {
   font-weight: bold;
 }
 
+/* =========================
+   Footer
+   ========================= */
 footer {
   text-align: center;
   padding: 40px 20px;
@@ -157,4 +234,20 @@ footer {
 footer .social a {
   margin: 0 10px;
   color: #ccc;
+}
+
+/* =========================
+   Light Mode (Optional)
+   ========================= */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #00bcd4;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
 }
