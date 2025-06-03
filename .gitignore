@@ -1,0 +1,6 @@
+# Node modules
+node_modules/
+# Vite build output
+dist/
+# gh-pages cache
+.cache/
