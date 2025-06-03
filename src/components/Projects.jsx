@@ -1,26 +1,19 @@
-import reactLogo from '../assets/react.svg';
+import babelLogo from '../assets/only-logo.png';
 
 const projects = [
   {
-    img: reactLogo,
-    title: "React App",
-    desc: "A modern React application using hooks and components.",
-    tech: ["React", "JavaScript", "CSS"],
-    link: "#"
-  },
-  {
-    img: reactLogo,
-    title: "SVG Demo",
-    desc: "A project showcasing SVG graphics in React.",
-    tech: ["SVG", "React"],
-    link: "#"
+    img: babelLogo,
+    title: "Babel's Room",
+    desc: "A chatt application where you can temporary chat sessions with an end to end encryption.",
+    tech: ["React", "Django", "Docker"],
+    link: "https://github.com/simgerchev/chat-app"
   },
 ];
 
 export default function Projects() {
   return (
     <section className="projects" id="projects">
-      <h2 style={{ width: "100%", textAlign: "center" }}>My Projects</h2>
+      <h2 style={{ width: "100%", textAlign: "center" }}>My Projects / Github For More</h2>
       <div className="project-grid">
         {projects.map((proj, idx) => (
           <div className="project-card" key={idx}>
@@ -32,7 +25,7 @@ export default function Projects() {
                 <span className="tech-badge" key={i}>{tech}</span>
               ))}
             </div>
-            <a className="btn" href={proj.link}>View Project</a>
+            <a className="btn" href={proj.link} target="_blank" rel="noopener noreferrer">View Project</a>
           </div>
         ))}
       </div>
