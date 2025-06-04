@@ -3,5 +3,10 @@ services:
   react-app:
     build: .
     ports:
-      - "8080:80"
-    restart: unless-stopped
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - VITE_BASE_PATH=/
+      - CHOKIDAR_USEPOLLING=true
