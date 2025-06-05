@@ -8,6 +8,20 @@ const projects = [
     tech: ["React", "Django", "Docker"],
     link: "https://github.com/simgerchev/chat-app"
   },
+  {
+    img: babelLogo,
+    title: "Babel's Room",
+    desc: "A chatt application where you can temporary chat sessions with an end to end encryption.",
+    tech: ["React", "Django", "Docker"],
+    link: "https://github.com/simgerchev/chat-app"
+  },
+  {
+    img: babelLogo,
+    title: "Babel's Room",
+    desc: "A chatt application where you can temporary chat sessions with an end to end encryption.",
+    tech: ["React", "Django", "Docker"],
+    link: "https://github.com/simgerchev/chat-app"
+  },
 ];
 
 export default function Projects() {

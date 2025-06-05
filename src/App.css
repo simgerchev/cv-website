@@ -218,6 +218,7 @@ nav a:hover {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 24px;
+  justify-items: center; /* This centers the cards in each grid cell */
   width: 100%;
   box-sizing: border-box;
 }
@@ -513,7 +514,6 @@ footer .social a {
     font-size: 1.5rem;
   }
   .project-card {
-    width: 100%;
     min-width: 0;
     max-width: 100%;
   }
