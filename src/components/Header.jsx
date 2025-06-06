@@ -1,4 +1,4 @@
-import WhiteLogo from '../assets/WhiteLogo.png';
+import WhiteLogo from '../assets/website-logo.png';
 
 export default function Header() {
   return (
@@ -6,10 +6,9 @@ export default function Header() {
       <div className="container">
         <img src={WhiteLogo} alt="Logo" className="logo-img" />
         <nav>
-          <a className="active" href="#">HOME</a>
-          <a href="#">INTRO</a>
+          <a className="active" href="#intro">HOME</a>
+          <a href="#skills">SKILLS</a>
           <a href="#projects">PROJECTS</a>
-          <a href="#">CONTACT</a>
         </nav>
       </div>
     </header>

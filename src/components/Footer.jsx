@@ -3,9 +3,8 @@ export default function Footer() {
     <footer>
     <div className="container">
         <div className="social">
-            <a href="#">LINKEDIN</a>
-            <a href="#">GITHUB</a>
-            <a href="#">INSTAGRAM</a>
+            <a href="https://www.linkedin.com/in/simeon-gerchev-2b70b122a/">LINKEDIN</a>
+            <a href="https://github.com/simgerchev">GITHUB</a>
         </div>
         <p>
             Copyright © 2025 <strong>Simeon Gerchev</strong><br />

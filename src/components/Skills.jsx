@@ -1,10 +1,16 @@
 const skills = [
-  { name: "JavaScript", level: 90 },
-  { name: "React", level: 85 },
-  { name: "Node.js", level: 80 },
-  { name: "Python", level: 75 },
-  { name: "DevOps", level: 70 },
-  { name: "Cybersecurity", level: 60 },
+  { name: "JavaScript", level: 40 },
+  { name: "React", level: 30 },
+  { name: "PHP", level: 50 },
+  { name: "Symfony", level: 30 },
+  { name: "Laravel", level: 20 },
+  { name: "Python", level: 50 },
+  { name: "Django", level: 30 },
+  { name: "C#", level: 40 },
+  { name: "Unity", level: 30 },
+  { name: "Redis", level: 30 },
+  { name: "Git", level: 30 },
+  { name: "Docker", level: 50 },
 ];
 
 export default function Skills() {
@@ -30,7 +36,7 @@ export default function Skills() {
       <div className="currently-learning">
         <span role="img" aria-label="rocket">📖</span>
         <span className="currently-learning-text">
-          Currently learning: <strong>TypeScript & Cloud Infrastructure</strong>
+          Currently learning: <strong>React and Django</strong>
         </span>
       </div>
     </section>
