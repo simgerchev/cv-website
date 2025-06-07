@@ -521,3 +521,23 @@ footer .social a {
     grid-template-columns: 1fr;
   }
 }
+
+.skills-section {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
+
+.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.chart-block {
+  flex: 1 1 400px;
+  min-width: 300px;
+}
+

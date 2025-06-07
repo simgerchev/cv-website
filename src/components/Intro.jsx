@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import Typed from "typed.js";
+import LottieAnimation from './LottieAnimation';
 
 export default function Intro() {
   const typedRef = useRef(null);
@@ -30,9 +31,7 @@ export default function Intro() {
         I’m passionate about <span className="intro-highlight">programming</span>, but I’m also very interested in <span className="intro-highlight">IT infrastructure</span>, <span className="intro-highlight">cybersecurity</span>, and <span className="intro-highlight">DevOps</span>.<br />
         In my free time, I enjoy <span className="intro-highlight">graphic design</span>, <span className="intro-highlight">drawing</span>, <span className="intro-highlight">reading</span>, going to the <span className="intro-highlight">gym</span>, and practicing <span className="intro-highlight">Muay Thai</span>.
       </p>
-      <div className="icons">
-        <span>🌊</span><span>🌊</span><span>🌊</span><span>🌊</span>
-      </div>
+      <LottieAnimation />
     </section>
   );
 }
