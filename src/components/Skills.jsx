@@ -3,18 +3,21 @@ import {
 } from 'recharts';
 
 const languageData = [
-  { subject: "JavaScript", A: 80 },
-  { subject: "Python", A: 90 },
-  { subject: "C#", A: 70 },
+  { subject: "JavaScript", A: 50 },
+  { subject: "Python", A: 50 },
+  { subject: "C#", A: 40 },
   { subject: "PHP", A: 60 },
 ];
 
 const techData = [
-  { subject: "React", A: 70 },
-  { subject: "Django", A: 60 },
-  { subject: "Docker", A: 80 },
-  { subject: "Git", A: 85 },
-  { subject: "Laravel", A: 50 },
+  { subject: "React", A: 40 },
+  { subject: "Django", A: 30 },
+  { subject: "Docker", A: 40 },
+  { subject: "Git", A: 50 },
+  { subject: "Laravel", A: 40 },
+  { subject: "Symfony", A: 50 },
+  { subject: "Redis", A: 35 },
+  { subject: "RabbitMQ", A: 35 },
 ];
 
 export default function Skills() {
