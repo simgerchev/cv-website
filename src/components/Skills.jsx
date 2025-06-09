@@ -5,7 +5,7 @@ import {
 const languageData = [
   { subject: "JavaScript", A: 50 },
   { subject: "Python", A: 50 },
-  { subject: "C#", A: 40 },
+  { subject: "C#", A: 35 },
   { subject: "PHP", A: 60 },
 ];
 
