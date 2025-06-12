@@ -23,13 +23,6 @@
 /* =========================
    Global Layout & Typography
    ========================= */
-.app {
-  min-height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -40,25 +33,52 @@ html, body, #root {
 }
 
 body {
-  margin: 0;
-  font-family: inherit;
   background: var(--bg);
   color: var(--text);
-  overflow-x: hidden;
+  font-family: inherit;
+  margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
 }
 
 /* =========================
-   Links
+   Links & Navigation
    ========================= */
-a {
+a, .nav-link {
   color: #00bcd4;
   text-decoration: none;
 }
 
+nav {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+nav a, .nav-link {
+  color: var(--text-secondary);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-left: 20px;
+}
+
+nav a.active, .nav-link.active,
+nav a:hover, .nav-link:hover {
+  border-bottom: 2px solid var(--accent);
+  color: var(--accent);
+}
+
 /* =========================
-   Header & Navigation
+   Header
    ========================= */
 header {
   background: #1e2124;
@@ -66,96 +86,64 @@ header {
 }
 
 header .container {
-  flex-wrap: wrap;
   align-items: center;
-}
-
-nav {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .logo-img {
-  height: 50px;
-  width: auto;
-  margin-right: 16px;
   display: block;
+  height: 50px;
+  margin-right: 16px;
   object-fit: contain;
-}
-
-.container {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-sizing: border-box;
+  width: auto;
 }
 
 .logo {
+  color: var(--accent);
   font-size: 24px;
   font-weight: bold;
-  color: var(--accent);
-}
-
-nav a {
-  margin-left: 20px;
-  color: var(--text-secondary);
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-  font-weight: 500;
-  letter-spacing: 1px;
-}
-
-nav a.active,
-nav a:hover {
-  color: var(--accent);
-  border-bottom: 2px solid var(--accent);
 }
 
 /* =========================
    Intro Section
    ========================= */
 .intro {
-  text-align: center;
   padding: 60px 20px;
+  text-align: center;
 }
 
 .intro-title {
+  color: var(--accent);
   font-family: 'Oswald', Arial, Helvetica, sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--accent);
   letter-spacing: 2px;
   margin-bottom: 24px;
   text-transform: uppercase;
 }
 
 .intro-lead {
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
   color: var(--text-secondary);
-  max-width: 600px;
-  margin: 0 auto 32px auto;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
   line-height: 1.7;
+  margin: 0 auto 32px auto;
+  max-width: 600px;
 }
 
-.intro-name {
+.intro-name,
+.intro-highlight {
   color: var(--accent);
   font-weight: 700;
   letter-spacing: 1px;
 }
 
-.intro-highlight {
-  color: var(--accent);
-  font-weight: 500;
-}
-
 .icons {
   display: flex;
-  justify-content: center;
   gap: 18px;
+  justify-content: center;
   margin-top: 18px;
 }
 
@@ -167,25 +155,18 @@ nav a:hover {
    Projects Section
    ========================= */
 .projects {
+  box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
   padding: 40px 20px;
   width: 100%;
-  box-sizing: border-box;
-  justify-content: center;
 }
 
 .project-text {
   flex: 1;
   min-width: 250px;
-}
-
-.project-text, .project-grid {
-  flex: 1 1 300px;
-  min-width: 250px;
-  max-width: 600px;
-  box-sizing: border-box;
 }
 
 .project-text h2 {
@@ -194,19 +175,19 @@ nav a:hover {
 }
 
 .project-text p {
-  margin-bottom: 15px;
   color: #aaa;
+  margin-bottom: 15px;
 }
 
 .btn {
   background: var(--accent);
-  padding: 10px 20px;
-  display: inline-block;
-  margin-top: 10px;
   color: var(--bg-header);
+  display: inline-block;
   font-family: 'Oswald', Arial, Helvetica, sans-serif;
   font-weight: 700;
   letter-spacing: 1px;
+  margin-top: 10px;
+  padding: 10px 20px;
 }
 
 .btn:hover {
@@ -215,39 +196,39 @@ nav a:hover {
 }
 
 .project-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-  justify-items: center; /* This centers the cards in each grid cell */
-  width: 100%;
   box-sizing: border-box;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  justify-items: center;
+  width: 100%;
 }
 
 .project-card {
+  align-items: center;
   background: var(--bg-header);
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-  padding: 24px 20px;
-  width: 260px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  padding: 24px 20px;
   transition: transform 0.15s, box-shadow 0.15s;
+  width: 260px;
 }
 
 .project-img {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
   border-radius: 8px;
+  height: 140px;
   margin-bottom: 14px;
+  object-fit: cover;
+  width: 100%;
 }
 
 .project-title {
-  font-size: 1.2rem;
   color: var(--accent);
-  margin: 10px 0 6px 0;
   font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  margin: 10px 0 6px 0;
 }
 
 .project-desc {
@@ -267,49 +248,33 @@ nav a:hover {
 
 .tech-badge {
   background: var(--gray);
-  color: #fff;
-  font-size: 0.95rem;
-  padding: 4px 12px;
   border-radius: 6px;
+  color: #fff;
   font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 0.95rem;
   letter-spacing: 0.5px;
-}
-
-.project-grid img,
-.project-box {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-}
-
-.project-box {
-  background: var(--gray);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  color: var(--text);
+  padding: 4px 12px;
 }
 
 /* =========================
    Skills Section
    ========================= */
 .skills {
-  margin: 40px auto;
-  max-width: 700px;
-  padding: 40px 20px;
   background: var(--bg-header);
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  margin: 40px auto;
+  max-width: 700px;
+  padding: 40px 20px;
 }
 
 .skills-title {
-  text-align: center;
-  font-size: 2rem;
   color: var(--accent);
-  margin-bottom: 32px;
-  letter-spacing: 2px;
   font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  margin-bottom: 32px;
+  text-align: center;
 }
 
 .skills-list {
@@ -319,57 +284,45 @@ nav a:hover {
 }
 
 .skill-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.1rem;
-  margin-bottom: 6px;
   color: var(--text-secondary);
+  display: flex;
   font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 1.1rem;
+  justify-content: space-between;
+  margin-bottom: 6px;
 }
 
 .skill-bar-bg {
   background: var(--gray);
   border-radius: 8px;
   height: 16px;
-  width: 100%;
   overflow: hidden;
+  width: 100%;
 }
 
 .skill-bar {
   background: var(--accent);
-  height: 100%;
   border-radius: 8px 0 0 8px;
+  height: 100%;
   transition: width 0.7s cubic-bezier(.4,2.08,.55,.44);
 }
 
 /* =========================
    Bible Verse Card
    ========================= */
-.bible-verse-card {
-  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-dark) 100%);
-  color: #fff;
-  border-radius: 16px;
-  padding: 28px 24px 18px 24px;
-  margin: 32px auto;
-  max-width: 480px;
-  box-shadow: 0 4px 24px rgba(51,134,255,0.12);
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-  text-align: center;
-  position: relative;
-}
-
+.bible-verse-card,
 .bible-verse-card.fancy {
+  animation: fadeIn 1s;
   background: linear-gradient(120deg, var(--accent) 0%, var(--accent-dark) 100%);
-  color: #fff;
   border-radius: 20px;
-  padding: 36px 28px 24px 28px;
+  box-shadow: 0 8px 32px rgba(51,134,255,0.18);
+  color: #fff;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
   margin: 40px auto;
   max-width: 520px;
-  box-shadow: 0 8px 32px rgba(51,134,255,0.18);
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-  text-align: center;
+  padding: 36px 28px 24px 28px;
   position: relative;
-  animation: fadeIn 1s;
+  text-align: center;
 }
 
 @keyframes fadeIn {
@@ -379,28 +332,28 @@ nav a:hover {
 
 .bible-verse-quote-icon {
   font-size: 2.8rem;
+  left: 24px;
   opacity: 0.18;
+  pointer-events: none;
   position: absolute;
   top: 18px;
-  left: 24px;
-  pointer-events: none;
 }
 
 .bible-verse-text {
   font-size: 1.35rem;
   font-style: italic;
-  margin: 0 0 18px 0;
-  line-height: 1.7;
   letter-spacing: 0.2px;
+  line-height: 1.7;
+  margin: 0 0 18px 0;
   padding: 0 18px;
 }
 
 .bible-verse-ref {
-  font-size: 1.05rem;
   color: #e0eaff;
-  opacity: 0.85;
+  font-size: 1.05rem;
   letter-spacing: 1px;
   margin-top: 8px;
+  opacity: 0.85;
 }
 
 .bible-verse-loading {
@@ -410,58 +363,140 @@ nav a:hover {
 }
 
 .bible-verse-refresh {
-  position: absolute;
-  top: 18px;
-  right: 24px;
+  align-items: center;
   background: rgba(255,255,255,0.10);
   border: none;
-  color: #fff;
-  font-size: 1.2rem;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  color: #fff;
   cursor: pointer;
-  transition: background 0.2s;
   display: flex;
-  align-items: center;
+  font-size: 1.2rem;
+  height: 32px;
   justify-content: center;
+  position: absolute;
+  right: 24px;
+  top: 18px;
+  transition: background 0.2s;
+  width: 32px;
 }
 .bible-verse-refresh:hover {
   background: rgba(255,255,255,0.22);
 }
 
 /* =========================
+   Random Painting Card
+   ========================= */
+.famous-painting-card {
+  background: var(--bg-header);
+  border-radius: 16px;
+  color: var(--text);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  margin: 2em auto;
+  max-width: 420px;
+  padding: 2em 1.5em;
+  text-align: center;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.famous-painting-card h3 {
+  color: var(--accent);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 1.3em;
+  letter-spacing: 1px;
+  margin-bottom: 1em;
+}
+
+.famous-painting-card img {
+  background: #23272a;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(51,134,255,0.10);
+  margin-bottom: 1em;
+  max-height: 400px;
+  max-width: 100%;
+}
+
+.famous-painting-card strong {
+  color: var(--accent);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 1.1em;
+}
+
+/* =========================
+   Browser Terminal
+   ========================= */
+.browser-terminal {
+  background: #181c20;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(30, 41, 59, 0.18);
+  color: #b8e1fc;
+  display: flex;
+  flex-direction: column;
+  font-family: monospace;
+  margin: 2em auto;
+  max-width: 600px;
+  min-height: 300px;
+  padding: 1em;
+}
+
+.browser-terminal-lines {
+  flex: 1;
+  margin-bottom: 0.5em;
+  min-height: 200px;
+  overflow-y: auto;
+}
+
+.browser-terminal-input-row {
+  align-items: center;
+  display: flex;
+}
+
+.browser-terminal-prompt {
+  color: #7fffd4;
+  margin-right: 0.5em;
+}
+
+.browser-terminal-input {
+  background: transparent;
+  border: none;
+  color: #b8e1fc;
+  font-family: monospace;
+  font-size: 1em;
+  outline: none;
+  width: 90%;
+}
+
+/* =========================
    Footer
    ========================= */
 footer {
-  text-align: center;
-  padding: 40px 20px;
   background: var(--bg-header);
   color: var(--text-secondary);
+  padding: 40px 20px;
+  text-align: center;
 }
 
 footer .social a {
-  margin: 0 10px;
   color: #ccc;
+  margin: 0 10px;
 }
 
 /* =========================
    Currently Learning Highlight
    ========================= */
 .currently-learning {
-  margin: 36px auto 0 auto;
-  padding: 18px 24px;
-  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%);
-  color: #fff;
-  border-radius: 12px;
-  font-size: 1.15rem;
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-  display: flex;
   align-items: center;
-  gap: 14px;
-  max-width: 420px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
   animation: pulse 2s infinite alternate;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  color: #fff;
+  display: flex;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 1.15rem;
+  gap: 14px;
+  margin: 36px auto 0 auto;
+  max-width: 420px;
+  padding: 18px 24px;
 }
 
 @keyframes pulse {
@@ -479,8 +514,8 @@ footer .social a {
    ========================= */
 @media (max-width: 800px) {
   header .container {
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
     padding: 12px 8px;
   }
   .logo-img {
@@ -488,14 +523,14 @@ footer .social a {
     margin-right: 0;
   }
   nav {
-    flex-direction: column;
-    width: 100%;
     align-items: flex-start;
+    flex-direction: column;
     gap: 8px;
+    width: 100%;
   }
   nav a {
-    margin: 0 0 8px 0;
     font-size: 1.1rem;
+    margin: 0 0 8px 0;
     padding: 6px 0;
   }
 }
@@ -514,8 +549,8 @@ footer .social a {
     font-size: 1.5rem;
   }
   .project-card {
-    min-width: 0;
     max-width: 100%;
+    min-width: 0;
   }
   .project-grid {
     grid-template-columns: 1fr;
@@ -523,9 +558,9 @@ footer .social a {
 }
 
 .skills-section {
-  padding: 2rem;
-  max-width: 1200px;
   margin: auto;
+  max-width: 1200px;
+  padding: 2rem;
   text-align: center;
 }
 
@@ -540,42 +575,3 @@ footer .social a {
   flex: 1 1 400px;
   min-width: 300px;
 }
-
-/* =========================
-   Random Painting Section
-   ========================= */
-.famous-painting-card {
-  background: var(--bg-header);
-  border-radius: 16px;
-  padding: 2em 1.5em;
-  margin: 2em auto;
-  max-width: 420px;
-  text-align: center;
-  color: var(--text);
-  transition: box-shadow 0.2s, background 0.2s;
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-}
-
-.famous-painting-card h3 {
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-  font-size: 1.3em;
-  margin-bottom: 1em;
-  color: var(--accent);
-  letter-spacing: 1px;
-}
-
-.famous-painting-card img {
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(51,134,255,0.10);
-  margin-bottom: 1em;
-  background: #23272a;
-  max-width: 100%;
-  max-height: 400px;
-}
-
-.famous-painting-card strong {
-  font-size: 1.1em;
-  color: var(--accent);
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-}
-

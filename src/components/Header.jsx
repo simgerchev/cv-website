@@ -1,4 +1,5 @@
 import WhiteLogo from '../assets/website-logo.png';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
@@ -6,9 +7,10 @@ export default function Header() {
       <div className="container">
         <img src={WhiteLogo} alt="Logo" className="logo-img" />
         <nav>
-          <a className="active" href="#intro">HOME</a>
-          <a href="#skills">SKILLS</a>
-          <a href="#projects">PROJECTS</a>
+          <Link to="/" className="nav-link">HOME</Link>
+          <a href="#skills" className="nav-link">SKILLS</a>
+          <a href="#projects" className="nav-link">PROJECTS</a>
+          <Link to="/terminal" className="nav-link">TERMINAL</Link>
         </nav>
       </div>
     </header>
