@@ -7,7 +7,7 @@ export default function Header() {
       <div className="container">
         <img src={WhiteLogo} alt="Logo" className="logo-img" />
         <nav>
-          <Link to="/" className="nav-link">HOME</Link>
+          <Link to="/cv-website" className="nav-link">HOME</Link>
           <a href="#skills" className="nav-link">SKILLS</a>
           <a href="#projects" className="nav-link">PROJECTS</a>
           <Link to="/terminal" className="nav-link">TERMINAL</Link>
