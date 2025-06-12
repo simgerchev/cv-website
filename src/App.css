@@ -541,3 +541,41 @@ footer .social a {
   min-width: 300px;
 }
 
+/* =========================
+   Random Painting Section
+   ========================= */
+.famous-painting-card {
+  background: var(--bg-header);
+  border-radius: 16px;
+  padding: 2em 1.5em;
+  margin: 2em auto;
+  max-width: 420px;
+  text-align: center;
+  color: var(--text);
+  transition: box-shadow 0.2s, background 0.2s;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+}
+
+.famous-painting-card h3 {
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 1.3em;
+  margin-bottom: 1em;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+.famous-painting-card img {
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(51,134,255,0.10);
+  margin-bottom: 1em;
+  background: #23272a;
+  max-width: 100%;
+  max-height: 400px;
+}
+
+.famous-painting-card strong {
+  font-size: 1.1em;
+  color: var(--accent);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+}
+

@@ -22,7 +22,7 @@ const techData = [
 
 export default function Skills() {
   return (
-    <section className="skills-section">
+    <section className="skills-section"  id="skills">
       <h2>Skills Overview</h2>
       <div className="charts-container">
         <div className="chart-block">
