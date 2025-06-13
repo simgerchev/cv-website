@@ -1,17 +1,103 @@
 import React, { useState, useRef, useEffect } from "react";
 
-const COMMANDS = {
-  help: "Available commands: help, about, clear, hello, date, echo, random, whoami, ls, pwd, cd",
-  about: "This is a simulated bash terminal in your browser. Type 'help' to see commands.",
-  hello: "Hello, user! 👋",
-  whoami: "user",
-};
-
 const FILESYSTEM = {
   "~": ["projects", "skills", "about.txt"],
   "/projects": ["cv-website", "bash-sim"],
   "/skills": ["react", "css", "javascript"],
 };
+
+// Command registry for scalability
+const commandRegistry = [
+  {
+    name: "help",
+    description: "List available commands",
+    handler: ({ registry }) =>
+      "Available commands: " + registry.map((cmd) => cmd.name).join(", "),
+  },
+  {
+    name: "about",
+    description: "About this terminal",
+    handler: () =>
+      "This is a simulated bash terminal in your browser. Type 'help' to see commands.",
+  },
+  {
+    name: "hello",
+    description: "Say hello",
+    handler: () => "Hello, user! 👋",
+  },
+  {
+    name: "whoami",
+    description: "Show user name",
+    handler: () => "user",
+  },
+  {
+    name: "pwd",
+    description: "Print working directory",
+    handler: ({ cwd }) => cwd,
+  },
+  {
+    name: "ls",
+    description: "List files in current directory",
+    handler: ({ cwd }) => (FILESYSTEM[cwd] || []).join("  "),
+  },
+  {
+    name: "cd",
+    description: "Change directory",
+    handler: ({ args, cwd, setCwd }) => {
+      const arg = args[0];
+      if (!arg || arg === "~") {
+        setCwd("~");
+        return "";
+      } else if (arg === "..") {
+        if (cwd === "~") return "";
+        const parts = cwd.split("/");
+        parts.pop();
+        let newPath = parts.join("/");
+        if (newPath === "") newPath = "~";
+        setCwd(newPath);
+        return "";
+      } else if (arg.startsWith("/")) {
+        if (FILESYSTEM[arg]) {
+          setCwd(arg);
+          return "";
+        } else {
+          return `cd: no such file or directory: ${arg}`;
+        }
+      } else {
+        const newPath = cwd === "~" ? `/${arg}` : `${cwd}/${arg}`;
+        if (FILESYSTEM[newPath]) {
+          setCwd(newPath);
+          return "";
+        } else {
+          return `cd: no such file or directory: ${arg}`;
+        }
+      }
+    },
+  },
+  {
+    name: "echo",
+    description: "Echo arguments",
+    handler: ({ args }) => args.join(" "),
+  },
+  {
+    name: "date",
+    description: "Show current date/time",
+    handler: () => new Date().toString(),
+  },
+  {
+    name: "random",
+    description: "Show a random number",
+    handler: () => "Random number: " + Math.floor(Math.random() * 10000),
+  },
+  {
+    name: "clear",
+    description: "Clear the terminal",
+    handler: ({ setLines }) => {
+      setLines([]);
+      return null;
+    },
+  },
+];
 
 export default function BrowserTerminal() {
   const [lines, setLines] = useState([
@@ -39,62 +125,44 @@ export default function BrowserTerminal() {
     }
   };
 
-  const processCommand = (cmd) => {
-    if (cmd === "") return;
-    if (cmd === "clear") {
-      setLines([]);
+  
+  function processCommand(cmdLine) {
+    if (cmdLine === "") return;
+    const [cmd, ...args] = cmdLine.split(" ");
+    
+    // Check if the command is in the registry
+    const command = commandRegistry.find((c) => c.name === cmd);
+    if (!command) {
+      setLines((prev) => [
+        ...prev,
+        `${prompt} ${cmdLine}`,
+        `bash: command not found: ${cmd}`,
+      ]);
       return;
     }
-    let output = "";
-    if (cmd === "pwd") {
-      output = cwd;
-    } else if (cmd === "ls") {
-      output = (FILESYSTEM[cwd] || []).join("  ");
-    } else if (cmd.startsWith("cd")) {
-      const arg = cmd.slice(2).trim();
-      if (!arg || arg === "~") {
-        setCwd("~");
-        output = "";
-      } else if (arg === "..") {
-        if (cwd === "~") {
-          output = "";
-        } else {
-          const parts = cwd.split("/");
-          parts.pop();
-          let newPath = parts.join("/");
-          if (newPath === "") newPath = "~";
-          setCwd(newPath);
-          output = "";
-        }
-      } else if (arg.startsWith("/")) {
-        if (FILESYSTEM[arg]) {
-          setCwd(arg);
-          output = "";
-        } else {
-          output = `cd: no such file or directory: ${arg}`;
-        }
-      } else {
-        const newPath = cwd === "~" ? `/${arg}` : `${cwd}/${arg}`;
-        if (FILESYSTEM[newPath]) {
-          setCwd(newPath);
-          output = "";
-        } else {
-          output = `cd: no such file or directory: ${arg}`;
-        }
-      }
-    } else if (cmd.startsWith("echo ")) {
-      output = cmd.slice(5);
-    } else if (cmd === "date") {
-      output = new Date().toString();
-    } else if (cmd === "random") {
-      output = "Random number: " + Math.floor(Math.random() * 10000);
-    } else if (COMMANDS[cmd]) {
-      output = COMMANDS[cmd];
-    } else {
-      output = `bash: command not found: ${cmd}`;
+
+    // Special handling for clear (it resets lines)
+    if (cmd === "clear") {
+      command.handler({ setLines });
+      return;
     }
-    setLines((prev) => [...prev, `${prompt} ${cmd}`, ...(output ? [output] : [])]);
-  };
+
+    // For commands that may need state
+    const output = command.handler({
+      args,
+      cwd,
+      setCwd,
+      setLines,
+      registry: commandRegistry,
+    });
+    
+    // If the output is null, we don't want to add a new line
+    setLines((prev) => [
+      ...prev,
+      `${prompt} ${cmdLine}`,
+      ...(output ? [output] : []),
+    ]);
+  }
 
   return (
     <div className="browser-terminal">
