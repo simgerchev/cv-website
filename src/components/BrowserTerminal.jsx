@@ -21,14 +21,9 @@ const commandRegistry = [
       "This is a simulated bash terminal in your browser. Type 'help' to see commands.",
   },
   {
-    name: "hello",
-    description: "Say hello",
-    handler: () => "Hello, user! 👋",
-  },
-  {
     name: "whoami",
     description: "Show user name",
-    handler: () => "user",
+    handler: () => "user",// can be replaced with a dynamic username
   },
   {
     name: "pwd",
