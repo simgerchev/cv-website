@@ -108,4 +108,9 @@ If you have run out of energy or time for your project, put a note at the top of
 =======
 To Do: 
 Random Dungeon Generator / RPG
+<<<<<<< HEAD
 >>>>>>> 268e6e3 (Update README.md)
+=======
+Implemented: 
+Terminal Simulator 
+>>>>>>> aee816b (Update README.md)
