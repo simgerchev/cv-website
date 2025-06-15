@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 
 const FILESYSTEM = {
   "~": ["projects", "skills", "about.txt"],
-  "/projects": ["cv-website", "bash-sim"],
+  "/projects": ["cv-website", "bash-sim", "python-scripts"],
   "/skills": ["react", "css", "javascript"],
 };
 
