@@ -14,4 +14,4 @@ If you are developing a production application, we recommend using TypeScript wi
 To Do: 
 Random Dungeon Generator / RPG
 Implemented: 
-Terminal Simulator 
+Terminal Simulator (still up some room for improvement, file system etc) 
