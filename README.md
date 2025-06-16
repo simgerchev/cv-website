@@ -112,5 +112,9 @@ Random Dungeon Generator / RPG
 >>>>>>> 268e6e3 (Update README.md)
 =======
 Implemented: 
+<<<<<<< HEAD
 Terminal Simulator 
 >>>>>>> aee816b (Update README.md)
+=======
+Terminal Simulator (still up some room for improvement, file system etc) 
+>>>>>>> ef5b8d2 (Update README.md)
