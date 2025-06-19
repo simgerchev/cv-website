@@ -1,9 +1,44 @@
 import React, { useState, useRef, useEffect } from "react";
 
 const FILESYSTEM = {
-  "~": ["projects", "skills", "about.txt"],
-  "/projects": ["cv-website", "bash-sim", "python-scripts"],
-  "/skills": ["react", "css", "javascript"],
+  "~": ["projects", "skills", "about.txt", "contact.txt", "resume.pdf"],
+  "/projects": [
+    "cv-website",
+    "bash-sim",
+    "python-scripts",
+    "portfolio-site",
+    "weather-app",
+    "notes.md"
+  ],
+  "/skills": [
+    "react",
+    "css",
+    "javascript",
+    "nodejs.txt",
+    "python.txt",
+    "docker.txt"
+  ],
+  "/projects/cv-website": [
+    "README.md",
+    "src",
+    "public",
+    "package.json",
+    "deploy.sh"
+  ],
+  "/projects/python-scripts": [
+    "data_cleaner.py",
+    "web_scraper.py",
+    "README.md"
+  ],
+  "/projects/portfolio-site": [
+    "index.html",
+    "styles.css",
+    "app.js"
+  ],
+  "/skills/react": [
+    "hooks.md",
+    "context.md"
+  ]
 };
 
 // Command registry for scalability
