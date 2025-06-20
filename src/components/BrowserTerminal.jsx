@@ -1,44 +1,45 @@
 import React, { useState, useRef, useEffect } from "react";
 
 const FILESYSTEM = {
-  "~": ["projects", "skills", "about.txt", "contact.txt", "resume.pdf"],
-  "/projects": [
-    "cv-website",
-    "bash-sim",
-    "python-scripts",
-    "portfolio-site",
-    "weather-app",
-    "notes.md"
-  ],
-  "/skills": [
-    "react",
-    "css",
-    "javascript",
-    "nodejs.txt",
-    "python.txt",
-    "docker.txt"
-  ],
-  "/projects/cv-website": [
-    "README.md",
-    "src",
-    "public",
-    "package.json",
-    "deploy.sh"
-  ],
-  "/projects/python-scripts": [
-    "data_cleaner.py",
-    "web_scraper.py",
-    "README.md"
-  ],
-  "/projects/portfolio-site": [
-    "index.html",
-    "styles.css",
-    "app.js"
-  ],
-  "/skills/react": [
-    "hooks.md",
-    "context.md"
-  ]
+  home: {
+    user: {
+      "about.txt": "This is the about file.",
+      "resume.pdf": null,
+      "contact.txt": "Email: user@example.com",
+      projects: {
+        "cv-website": {
+          "README.md": "# CV Website\nA personal CV website.",
+          "src": {},
+          "public": {},
+          "package.json": "{...}",
+        },
+        "portfolio-site": {
+          "index.html": "<!DOCTYPE html>...",
+          "styles.css": "body { ... }",
+          "app.js": "// JavaScript code",
+        },
+        "python-scripts": {
+          "data_cleaner.py": "# Python script",
+          "web_scraper.py": "# Another script",
+        },
+      },
+      skills: {
+        "react.md": "React skills and experience.",
+        "css.md": "CSS skills.",
+        "javascript.md": "JavaScript skills.",
+        "nodejs.md": "Node.js skills.",
+        "python.md": "Python skills.",
+      },
+    },
+  },
+  etc: {
+    "config.json": "{...}",
+  },
+  var: {
+    log: {
+      "system.log": "",
+    },
+  },
 };
 
 // Command registry for scalability
@@ -58,7 +59,7 @@ const commandRegistry = [
   {
     name: "whoami",
     description: "Show user name",
-    handler: () => "user",// can be replaced with a dynamic username
+    handler: () => "user", // can be replaced with a dynamic username
   },
   {
     name: "pwd",
@@ -155,11 +156,10 @@ export default function BrowserTerminal() {
     }
   };
 
-  
   function processCommand(cmdLine) {
     if (cmdLine === "") return;
     const [cmd, ...args] = cmdLine.split(" ");
-    
+
     // Check if the command is in the registry
     const command = commandRegistry.find((c) => c.name === cmd);
     if (!command) {
@@ -185,7 +185,7 @@ export default function BrowserTerminal() {
       setLines,
       registry: commandRegistry,
     });
-    
+
     // If the output is null, we don't want to add a new line
     setLines((prev) => [
       ...prev,
