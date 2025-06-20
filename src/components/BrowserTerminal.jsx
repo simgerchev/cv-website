@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
+// Realistic, nested filesystem
 const FILESYSTEM = {
   home: {
     user: {
@@ -9,8 +10,8 @@ const FILESYSTEM = {
       projects: {
         "cv-website": {
           "README.md": "# CV Website\nA personal CV website.",
-          "src": {},
-          "public": {},
+          src: {},
+          public: {},
           "package.json": "{...}",
         },
         "portfolio-site": {
@@ -42,13 +43,52 @@ const FILESYSTEM = {
   },
 };
 
-// Command registry for scalability
+// Helper: Normalize and resolve a path string to an array of path parts
+function normalizePath(cwd, inputPath) {
+  let path = inputPath.trim();
+  if (!path) return cwd;
+  if (path === "~") return "/home/user";
+  let parts;
+  if (path.startsWith("/")) {
+    parts = path.split("/").filter(Boolean);
+  } else {
+    parts = cwd.split("/").filter(Boolean).concat(path.split("/").filter(Boolean));
+  }
+  const stack = [];
+  for (const part of parts) {
+    if (part === ".") continue;
+    if (part === "..") {
+      if (stack.length > 0) stack.pop();
+    } else {
+      stack.push(part);
+    }
+  }
+  return "/" + stack.join("/");
+}
+
+// Helper: Get the filesystem node at a given path
+function getNode(fs, path) {
+  if (path === "/") return fs;
+  const parts = path.split("/").filter(Boolean);
+  let node = fs;
+  for (const part of parts) {
+    if (node && typeof node === "object" && part in node) {
+      node = node[part];
+    } else {
+      return null;
+    }
+  }
+  return node;
+}
+
+// Command registry
 const commandRegistry = [
   {
     name: "help",
     description: "List available commands",
     handler: ({ registry }) =>
-      "Available commands: " + registry.map((cmd) => cmd.name).join(", "),
+      "Available commands:\n" +
+      registry.map((cmd) => `${cmd.name} - ${cmd.description}`).join("\n"),
   },
   {
     name: "about",
@@ -59,7 +99,7 @@ const commandRegistry = [
   {
     name: "whoami",
     description: "Show user name",
-    handler: () => "user", // can be replaced with a dynamic username
+    handler: () => "user",
   },
   {
     name: "pwd",
@@ -69,40 +109,39 @@ const commandRegistry = [
   {
     name: "ls",
     description: "List files in current directory",
-    handler: ({ cwd }) => (FILESYSTEM[cwd] || []).join("  "),
+    handler: ({ cwd }) => {
+      const node = getNode(FILESYSTEM, cwd);
+      if (!node || typeof node !== "object") return "ls: not a directory";
+      const entries = Object.keys(node);
+      return entries.length ? entries.join("  ") : "";
+    },
   },
   {
     name: "cd",
     description: "Change directory",
     handler: ({ args, cwd, setCwd }) => {
-      const arg = args[0];
-      if (!arg || arg === "~") {
-        setCwd("~");
-        return "";
-      } else if (arg === "..") {
-        if (cwd === "~") return "";
-        const parts = cwd.split("/");
-        parts.pop();
-        let newPath = parts.join("/");
-        if (newPath === "") newPath = "~";
+      const target = args[0] || "~";
+      const newPath = normalizePath(cwd, target);
+      const node = getNode(FILESYSTEM, newPath);
+      if (node && typeof node === "object") {
         setCwd(newPath);
         return "";
-      } else if (arg.startsWith("/")) {
-        if (FILESYSTEM[arg]) {
-          setCwd(arg);
-          return "";
-        } else {
-          return `cd: no such file or directory: ${arg}`;
-        }
       } else {
-        const newPath = cwd === "~" ? `/${arg}` : `${cwd}/${arg}`;
-        if (FILESYSTEM[newPath]) {
-          setCwd(newPath);
-          return "";
-        } else {
-          return `cd: no such file or directory: ${arg}`;
-        }
+        return `cd: no such file or directory: ${target}`;
       }
+    },
+  },
+  {
+    name: "cat",
+    description: "Show file contents",
+    handler: ({ args, cwd }) => {
+      if (!args[0]) return "cat: missing file operand";
+      const filePath = normalizePath(cwd, args[0]);
+      const node = getNode(FILESYSTEM, filePath);
+      if (node === null) return ""; // empty file
+      if (typeof node === "string") return node;
+      if (typeof node === "object") return `cat: ${args[0]}: Is a directory`;
+      return `cat: ${args[0]}: No such file`;
     },
   },
   {
@@ -136,18 +175,18 @@ export default function BrowserTerminal() {
     "Type 'help' to see available commands.",
   ]);
   const [input, setInput] = useState("");
-  const [cwd, setCwd] = useState("~");
+  const [cwd, setCwd] = useState("/home/user");
   const terminalRef = useRef(null);
 
   useEffect(() => {
-    terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
   }, [lines]);
 
   const prompt = `user@site:${cwd}$`;
 
-  const handleInput = (e) => {
-    setInput(e.target.value);
-  };
+  const handleInput = (e) => setInput(e.target.value);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -159,9 +198,8 @@ export default function BrowserTerminal() {
   function processCommand(cmdLine) {
     if (cmdLine === "") return;
     const [cmd, ...args] = cmdLine.split(" ");
-
-    // Check if the command is in the registry
     const command = commandRegistry.find((c) => c.name === cmd);
+
     if (!command) {
       setLines((prev) => [
         ...prev,
@@ -177,7 +215,6 @@ export default function BrowserTerminal() {
       return;
     }
 
-    // For commands that may need state
     const output = command.handler({
       args,
       cwd,
@@ -186,11 +223,10 @@ export default function BrowserTerminal() {
       registry: commandRegistry,
     });
 
-    // If the output is null, we don't want to add a new line
     setLines((prev) => [
       ...prev,
       `${prompt} ${cmdLine}`,
-      ...(output ? [output] : []),
+      ...(output !== null && output !== undefined && output !== "" ? [output] : []),
     ]);
   }
 
