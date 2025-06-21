@@ -2,11 +2,25 @@ import React, { useState, useRef, useEffect } from "react";
 
 // Realistic, nested filesystem
 const FILESYSTEM = {
+  bin: {
+    "ls": null,
+    "cat": null,
+    "echo": null,
+    "bash": null,
+  },
+  etc: {
+    "passwd": "root:x:0:0:root:/root:/bin/bash\nuser:x:1000:1000:User,,,:/home/user:/bin/bash",
+    "hosts": "127.0.0.1 localhost\n192.168.1.1 router",
+    "motd": "Welcome to your simulated terminal!",
+  },
   home: {
     user: {
+      ".bashrc": "# .bashrc config",
+      ".profile": "# .profile config",
       "about.txt": "This is the about file.",
       "resume.pdf": null,
       "contact.txt": "Email: user@example.com",
+      "notes.md": "# Notes\n- Learn React\n- Build a terminal",
       projects: {
         "cv-website": {
           "README.md": "# CV Website\nA personal CV website.",
@@ -31,15 +45,30 @@ const FILESYSTEM = {
         "nodejs.md": "Node.js skills.",
         "python.md": "Python skills.",
       },
+      Downloads: {
+        "sample.zip": null,
+        "image.png": null,
+      },
+      Pictures: {
+        "vacation.jpg": null,
+        "profile.png": null,
+      },
     },
   },
-  etc: {
-    "config.json": "{...}",
-  },
+  tmp: {},
   var: {
     log: {
       "system.log": "",
+      "app.log": "",
     },
+  },
+  usr: {
+    bin: {
+      "python": null,
+      "node": null,
+      "npm": null,
+    },
+    share: {},
   },
 };
 
