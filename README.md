@@ -15,3 +15,4 @@ To Do:
 Random Dungeon Generator / RPG
 Implemented: 
 Terminal Simulator (still up some room for improvement, file system etc) 
+we need subfolders and puzzles
