@@ -4,7 +4,7 @@ pages:
   script:
     - npm ci
     - npm run build
-    - mkdir public
+    - mkdir -p public
     - cp -r dist/* public/
   artifacts:
     paths:
