@@ -1,6 +1,7 @@
 stages:
   - audit
   - build
+  - deploy
 
 security_audit:
   stage: audit
