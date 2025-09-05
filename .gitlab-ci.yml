@@ -1,9 +1,43 @@
-image: node:20
+stages:
+  - audit
+  - build
 
-pages:
+security_audit:
+  stage: audit
+  image: node:20
+  script:
+    - npm ci
+    - npm audit --audit-level=high
+  only:
+    - main
+
+deps_check:
+  stage: audit
+  image: node:20
+  script:
+    - npm ci
+    - npm outdated || true
+  only:
+    - main
+
+build_check:
+  stage: build
+  image: node:20
   script:
     - npm ci
     - npm run build
+  only:
+    - main
+  artifacts:
+    paths:
+      - dist
+
+pages:
+  stage: deploy
+  image: node:20
+  dependencies:
+    - build_check
+  script:
     - mkdir -p public
     - cp -r dist/* public/
   artifacts:
