@@ -14,7 +14,7 @@ function App() {
         <Header />
         <Routes>
           <Route
-            path="/cv-website"
+            path="/"
             element={
               <>
                 <Intro />
