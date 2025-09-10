@@ -138,10 +138,25 @@ const commandRegistry = [
   {
     name: "ls",
     description: "List files in current directory",
-    handler: ({ cwd }) => {
+    handler: ({ cwd, args }) => {
       const node = getNode(FILESYSTEM, cwd);
       if (!node || typeof node !== "object") return "ls: not a directory";
       const entries = Object.keys(node);
+      if (args.length && args[0] === "-la") {
+        // Simulate 'ls -la' output
+        const lines = [
+          "drwxr-xr-x 2 user user 4096 .",
+          "drwxr-xr-x 2 user user 4096 ..",
+        ];
+        for (const entry of entries) {
+          // Simulate file/dir type
+          const isDir = typeof node[entry] === "object" && node[entry] !== null;
+          const type = isDir ? "d" : "-";
+          const perms = isDir ? "drwxr-xr-x" : "-rw-r--r--";
+          lines.push(`${perms} 1 user user 1234 ${entry}`);
+        }
+        return lines.join("\n");
+      }
       return entries.length ? entries.join("  ") : "";
     },
   },
@@ -257,7 +272,9 @@ export default function BrowserTerminal() {
     setLines((prev) => [
       ...prev,
       `${prompt} ${cmdLine}`,
-      ...(output !== null && output !== undefined && output !== "" ? [output] : []),
+      ...(output !== null && output !== undefined && output !== ""
+        ? output.split("\n")
+        : []),
     ]);
   }
 
