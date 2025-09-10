@@ -4,27 +4,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
 
 :root {
-  --accent: #3386ff;
-  --accent-dark: #2563c9;
-  --bg: #181a20;
-  --bg-header: #23272a;
-  --text: #ffffff;
-  --text-secondary: #7d868c;
-  --gray: #495057;
-  --header-height: 90px;
-  --terminal-bg: #181d23;
-  --terminal-border: #2c313a;
-  --terminal-shadow: 0 8px 32px rgba(30, 41, 59, 0.22);
-  --terminal-text: #eaf6fb;
-  --terminal-prompt: #6fff57;
-  --terminal-prompt-glow: #00ff99;
-  --terminal-error: #ff4b4b;
-  --terminal-success: #3cff7f;
-  --terminal-arg: #ffe066;
-  --terminal-path: #4fa3ff;
-  --terminal-comment: #8a9ba8;
-  --terminal-scrollbar: #23272a;
-  --terminal-scrollbar-bg: #181a20;
+    --accent: #F20505;
+    --accent-dark: #BF0404;
+    --bg: #0D0D0D;
+    --bg-header: #ebf2eb0c;
+    --card-bg: #ebf2eb0c;
+    --text: #EBF2EB;
+    --text-secondary: #EBF2EB;
+    --gray: #BF0404;
+    --header-height: 90px;
+    --terminal-bg: #0D0D0D;
+    --terminal-border: #A62205;
+    --terminal-shadow: 0 8px 32px rgba(162, 34, 5, 0.18);
+    --terminal-text: #D9B1AD;
+    --terminal-prompt: #F23005;
+    --terminal-prompt-glow: #A62205;
+    --terminal-error: #F23005;
+    --terminal-success: #D9B1AD;
+    --terminal-arg: #A62205;
+    --terminal-path: #F23005;
+    --terminal-comment: #A62205;
+    --terminal-scrollbar: #591E11;
+    --terminal-scrollbar-bg: #0D0D0D;
   font-family: 'Oswald', Arial, Helvetica, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -106,7 +107,7 @@ nav a:hover, .nav-link:hover {
    Header
    ========================= */
 header {
-  background: #1e2124;
+  background: var(--bg-header);
   padding: 20px 50px;
 }
 
@@ -206,7 +207,7 @@ header .container {
 
 .btn {
   background: var(--accent);
-  color: var(--bg-header);
+  color: var(--text);
   display: inline-block;
   font-family: 'Oswald', Arial, Helvetica, sans-serif;
   font-weight: 700;
@@ -231,7 +232,7 @@ header .container {
 
 .project-card {
   align-items: center;
-  background: var(--bg-header);
+  background: var(--card-bg);
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
   display: flex;
@@ -602,7 +603,7 @@ footer .social a {
 .currently-learning {
   align-items: center;
   animation: pulse 2s infinite alternate;
-  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%);
+  background: var(--card-bg);
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.10);
   color: #fff;
@@ -615,10 +616,6 @@ footer .social a {
   padding: 18px 24px;
 }
 
-@keyframes pulse {
-  from { box-shadow: 0 2px 12px rgba(51,134,255,0.10);}
-  to   { box-shadow: 0 4px 24px rgba(51,134,255,0.25);}
-}
 
 .currently-learning-text strong {
   color: #fff;

@@ -38,7 +38,7 @@ export default function Skills() {
             <RadarChart outerRadius={90} data={languageData}>
               <PolarGrid />
               <PolarAngleAxis dataKey="subject" />
-              <Radar name="Languages" dataKey="A" stroke="#2563c9" fill="#2563c9" fillOpacity={0.6} />
+              <Radar name="Languages" dataKey="A" stroke="#F00000" fill="#F00000" fillOpacity={0.6} />
             </RadarChart>
           </ResponsiveContainer>
         </div>
@@ -49,7 +49,7 @@ export default function Skills() {
             <RadarChart outerRadius={90} data={frameworkData}>
               <PolarGrid />
               <PolarAngleAxis dataKey="subject" />
-              <Radar name="Frameworks" dataKey="A" stroke="#c92563" fill="#c92563" fillOpacity={0.6} />
+              <Radar name="Frameworks" dataKey="A" stroke="#F00000" fill="#F00000" fillOpacity={0.6} />
             </RadarChart>
           </ResponsiveContainer>
         </div>
@@ -60,7 +60,7 @@ export default function Skills() {
             <RadarChart outerRadius={90} data={devopsData}>
               <PolarGrid />
               <PolarAngleAxis dataKey="subject" />
-              <Radar name="DevOps & Tools" dataKey="A" stroke="#25c963" fill="#25c963" fillOpacity={0.6} />
+              <Radar name="DevOps & Tools" dataKey="A" stroke="#F00000" fill="#F00000" fillOpacity={0.6} />
             </RadarChart>
           </ResponsiveContainer>
         </div>

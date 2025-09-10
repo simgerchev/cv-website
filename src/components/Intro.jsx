@@ -29,7 +29,7 @@ export default function Intro() {
         My name is <span className="intro-name">Simeon</span>, I’m 24 years old and I have completed two vocational trainings in IT: 
         one as an IT Specialist with a focus on Multimedia, and another as an IT Specialist in Application Development.<br />
         I’m passionate about <span className="intro-highlight">programming</span>, but I’m also very interested in <span className="intro-highlight">IT infrastructure</span>, <span className="intro-highlight">cybersecurity</span>, and <span className="intro-highlight">DevOps</span>.<br />
-        In my free time, I enjoy <span className="intro-highlight">graphic design</span>, <span className="intro-highlight">drawing</span>, <span className="intro-highlight">reading</span>, going to the <span className="intro-highlight">gym</span>, and practicing <span className="intro-highlight">Muay Thai</span>.
+        In my free time, I enjoy <span className="intro-highlight">graphic design</span>, <span className="intro-highlight">drawing</span>, <span className="intro-highlight">reading</span>, going to the <span className="intro-highlight">gym</span>, and practicing <span className="intro-highlight">Muay Thai</span>{'<><'}.
       </p>
       <LottieAnimation />
     </section>

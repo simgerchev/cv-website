@@ -1,4 +1,4 @@
-import WhiteLogo from '../assets/website-logo.png';
+import WhiteLogo from '../assets/website-logo-pixel.png';
 import { Link } from 'react-router-dom';
 
 export default function Header() {
