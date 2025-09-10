@@ -7,47 +7,67 @@ const FILESYSTEM = {
     user: {
       "readme.md": { content: "Welcome to your home directory!", mode: "0644", owner: "user" },
       "first-level": {
-        "tasks.txt": { content: `Level 1 Tasks:\n1. Find the secret file hidden somewhere in the filesystem.\n2. Read the contents of the secret file.\n\nTip: Use commands like ls, cd, cat, echo, touch, mkdir, rm, mv, cp, pwd, whoami, and more.\n`, mode: "0644", owner: "user" },
+  "tasks.txt": { content: `Level 1 Tasks (Expert):\n1. Find the real flag hidden in a deeply nested folder.\n2. The file is encoded in base64. Decode it to get the flag.\n3. There are fake flags and decoy files.\n\nTip: Use find, cat, and base64 decoding.\n`, mode: "0644", owner: "user" },
         Documents: {
-          "secret.txt": { content: "Congratulations! You found the secret file.", mode: "0644", owner: "user" }
+          "not_the_secret.txt": { content: "Just a decoy!", mode: "0644", owner: "user" },
+          "fake_flag.txt": { content: "FLAG-FAKE-1", mode: "0644", owner: "user" },
         },
+        Deep: {
+          "deeper": {
+            "even_deeper": {
+              "real_flag.b64": { content: "RnVsbHkgRnVsbHkgRnVsbHkgRmxhZyBmb3VuZDogRXhwZXJ0IEV4cGVydCBFeHBlcnQgRmxhZy1FWFBFUlQ=", mode: "0644", owner: "user" }
+            },
+            "decoy.b64": { content: "RkxBRy1GQUtF", mode: "0644", owner: "user" }
+          }
+        }
       },
       "second-level": {
-        "tasks.txt": { content: `Level 2 Tasks:\n1. Create a file called completed.txt in your home directory.\n2. Write 'Victory!' inside completed.txt.\n\nTip: Use echo and touch.\n`, mode: "0644", owner: "user" },
+        "tasks.txt": { content: `Level 2 Tasks (Expert):\n1. Create a file called completed.txt in your home directory.\n2. Write 'Victory!' inside completed.txt.\n3. Change its permissions to 600 and owner to root (requires sudo).\n4. Prove you did it by showing its contents and permissions.\n5. There is a fake completed.txt in a subfolder.\n\nTip: Use echo, touch, chmod, chown, and ls -l.\n`, mode: "0644", owner: "user" },
         Hints: {
-          "clue1.txt": { content: "Try looking in directories that aren't listed in tasks.txt...", mode: "0644", owner: "user" },
-          "clue2.txt": { content: "Some files may be hidden. Can you find them?", mode: "0644", owner: "user" },
+          "clue1.txt": { content: "Check file permissions with ls -l.", mode: "0644", owner: "user" },
         },
+        Subfolder: {
+          "completed.txt": { content: "Not the real one!", mode: "0644", owner: "user" }
+        },
+        // The real completed.txt starts as root-owned
+        "completed.txt": { content: "", mode: "0644", owner: "root" }
       },
+      // Hide sudo password in a hidden file in home directory
+  ".sudo_password": { content: "hunter2", mode: "0644", owner: "user" },
       "third-level": {
-        "tasks.txt": { content: `Level 3 Tasks:\n1. Find the sudo password hidden somewhere in the filesystem.\n2. Use sudo to access locked files.\n\nTip: Use sudo and cat.\n`, mode: "0644", owner: "user" },
+        "tasks.txt": { content: `Level 3 Tasks (Expert):\n1. Find the sudo password hidden in a file with restricted permissions.\n2. Use sudo to access a locked file in Vault.\n3. The Vault contains a zip file.\n4. Unzip the file and find the flag inside.\n\nTip: Use sudo cat, unzip, and find the password first.\n`, mode: "0644", owner: "user" },
         ".hidden": {
-          "password.txt": { content: "hunter2", mode: "0600", owner: "user" }
+          "password.txt": { content: "hunter2", mode: "0400", owner: "root" }
         },
         Vault: {
-          "locked.txt": { content: "FLAG-12345", mode: "0400", owner: "root" }
+          "locked.zip": { content: "UEsDBBQAAAAIAAAAIQAAAAAAAAAAAAAAAABwYXlsb2FkLnR4dFBLBQYAAAAAAQABADYAAABJQ0UgRmxhZyBmb3VuZDogRmxhZy1FWFBFUlQ=", mode: "0400", owner: "root" },
+          // base64-encoded zip with file payload.txt containing the flag
         },
       },
       "fourth-level": {
-        "tasks.txt": { content: `Level 4 Tasks:\n1. Find and decode the base64 message in message.b64.\n\nTip: Use online tools or write a script!\n`, mode: "0644", owner: "user" },
-        "message.b64": { content: "Q29uZ3JhdHVsYXRpb25zISBZb3UgZGVjb2RlZCB0aGUgbWVzc2FnZSE=", mode: "0644", owner: "user" },
+  "tasks.txt": { content: `Level 4 Tasks (Expert):\n1. Find and decode the base64 message in message.b64.\n2. The decoded message is a hint for another file.\n3. Use the hint to find and read the next flag.\n\nTip: Use base64 and follow the hint.\n`, mode: "0644", owner: "user" },
+  "message.b64": { content: "This is the hint: hint.txt", mode: "0644", owner: "user" },
+  "hint.txt": { content: "FLAG-LEVEL4-EXPERT: You followed the hint!", mode: "0644", owner: "user" },
       },
       "fifth-level": {
-        "tasks.txt": { content: `Level 5 Tasks:\n1. Use grep to find the hidden flag in logs.txt.\n\nTip: Try: grep FLAG logs.txt\n`, mode: "0644", owner: "user" },
-        "logs.txt": { content: "Info: All systems go\nWarning: Disk space low\nFLAG-LEVEL5: Well done!\nError: Something went wrong\n", mode: "0644", owner: "user" },
+        "tasks.txt": { content: `Level 5 Tasks (Expert):\n1. Use grep and sort to find the hidden flag in logs.txt.\n2. The flag is surrounded by noise, fake flags, and out-of-order lines.\n3. Only the correct flag counts.\n\nTip: grep for FLAG-EXPERT and sort the results.\n`, mode: "0644", owner: "user" },
+        "logs.txt": { content: "Info: All systems go\nFLAG-FAKE: Not this one\nWarning: Disk space low\nFLAG-EXPERT: Well done!\nError: Something went wrong\nFLAG-FAKE: Nope\nFLAG-EXPERT: You found another!\n", mode: "0644", owner: "user" },
       },
       "sixth-level": {
-        "tasks.txt": { content: `Level 6 Tasks:\n1. Use pipes to extract the last line from data.txt.\n\nTip: Try: cat data.txt | tail -1\n`, mode: "0644", owner: "user" },
-        "data.txt": { content: "First line\nSecond line\nThird line\nFinal answer: pipes!", mode: "0644", owner: "user" },
+        "tasks.txt": { content: `Level 6 Tasks (Expert):\n1. Use pipes to extract the last line from data.txt.\n2. The last line contains a code, but the code is hex encoded.\n3. Decode the code and use it to unlock code.txt.\n\nTip: Use cat data.txt | tail -1, then decode hex, then cat code.txt.\n`, mode: "0644", owner: "user" },
+        "data.txt": { content: "First line\nSecond line\nThird line\n434F44452D4C4556454C362D455h54504552", mode: "0644", owner: "user" },
+        "code.txt": { content: "FLAG-LEVEL6-EXPERT: You unlocked the hex code!", mode: "0644", owner: "user" },
       },
       "seventh-level": {
-        "tasks.txt": { content: `Level 7 Tasks:\n1. Move flag.txt to the folder called destination.\n2. Copy flag.txt to backup.txt in the same folder.\n\nTip: Use mv and cp.\n`, mode: "0644", owner: "user" },
-        "flag.txt": { content: "FLAG-LEVEL7: File operations complete!", mode: "0644", owner: "user" },
-        "destination": {},
+        "tasks.txt": { content: `Level 7 Tasks (Expert):\n1. Move flag.txt to the folder called destination.\n2. Copy flag.txt to backup.txt in the same folder.\n3. Only the backup.txt contains the real flag.\n\nTip: Use mv and cp.\n`, mode: "0644", owner: "user" },
+        "flag.txt": { content: "Not the real flag!", mode: "0644", owner: "user" },
+        "destination": {
+          "backup.txt": { content: "FLAG-LEVEL7-EXPERT: Five operations complete!", mode: "0644", owner: "user" }
+        },
       },
       "eighth-level": {
-        "tasks.txt": { content: `Level 8 Tasks:\n1. Find the file owned by root (rootfile.txt).\n2. Change its owner to user using sudo chown.\n\nTip: Use sudo chown user rootfile.txt\n`, mode: "0644", owner: "user" },
-        "rootfile.txt": { content: "FLAG-LEVEL8: Ownership changed!", mode: "0644", owner: "root" },
+  "tasks.txt": { content: `Level 8 Tasks (Expert):\n1. Find the file owned by root (rootfile.txt).\n2. Change its owner to user using sudo chown.\n3. Edit the file to add your name.\n\nTip: Use sudo chown and echo.\n`, mode: "0644", owner: "user" },
+  "rootfile.txt": { content: "FLAG-LEVEL8-EXPERT: Ownership changed! Add your name here:", mode: "0644", owner: "root" },
       },
     },
   },
@@ -211,14 +231,21 @@ const commandRegistry = [
     description: "Create an empty file",
     handler: ({ args, cwd }) => {
       if (!args[0]) return "touch: missing file operand";
-      const filePath = normalizePath(cwd, args[0]);
+      let filePath = args[0];
+      if (filePath === "~") filePath = "/home/user";
+      else if (filePath.startsWith("~/")) filePath = "/home/user/" + filePath.slice(2);
+      else filePath = normalizePath(cwd, filePath);
       const parts = filePath.split("/").filter(Boolean);
       let node = FILESYSTEM;
       for (let i = 0; i < parts.length - 1; i++) {
         if (!node[parts[i]]) node[parts[i]] = {};
         node = node[parts[i]];
       }
-                node[parts[parts.length - 1]] = { content: "", mode: "0644", owner: "user" };
+      // Only create file if parent is a directory
+      if (typeof node !== "object" || ('content' in node)) {
+        return `touch: cannot create file at '${args[0]}': Not a directory`;
+      }
+      node[parts[parts.length - 1]] = { content: "", mode: "0644", owner: "user" };
       return "";
     },
   },
@@ -367,6 +394,40 @@ const commandRegistry = [
     },
   },
   {
+    name: "base64",
+    description: "Encode or decode base64 data",
+    handler: ({ args, cwd }) => {
+      if (!args.length) return "base64: missing file operand";
+      let decode = false;
+      let fileArg = args[0];
+      if (args[0] === "-d" || args[0] === "--decode") {
+        decode = true;
+        fileArg = args[1];
+      }
+      if (!fileArg) return "base64: missing file operand";
+      const filePath = normalizePath(cwd, fileArg);
+      const node = getNode(FILESYSTEM, filePath);
+      if (!node || typeof node !== "object" || !('content' in node)) return `base64: ${fileArg}: No such file`;
+      if (decode) {
+        try {
+          // Decode base64
+          const decoded = atob(node.content);
+          return decoded;
+        } catch (e) {
+          return "base64: decoding failed";
+        }
+      } else {
+        // Encode base64
+        try {
+          const encoded = btoa(node.content);
+          return encoded;
+        } catch (e) {
+          return "base64: encoding failed";
+        }
+      }
+    },
+  },
+  {
     name: "help",
     description: "List available commands",
     handler: ({ registry }) =>
@@ -393,8 +454,15 @@ const commandRegistry = [
     name: "ls",
     description: "List directory contents",
     handler: ({ cwd, args }) => {
-      const node = getNode(FILESYSTEM, cwd);
-      if (!node || typeof node !== "object") return `ls: cannot access '${cwd}': No such file or directory`;
+      let targetPath = cwd;
+      // If a folder/file is specified as an argument, use it
+      const folderArg = args.find(a => !a.startsWith("-"));
+      if (folderArg) {
+        targetPath = normalizePath(cwd, folderArg);
+      }
+      const node = getNode(FILESYSTEM, targetPath);
+      if (!node) return `ls: cannot access '${folderArg || cwd}': No such file or directory`;
+      if (typeof node !== "object" || ('content' in node)) return `ls: cannot access '${folderArg || cwd}': Not a directory`;
       let showAll = args.includes("-a") || args.includes("-la") || args.includes("-al");
       let longFormat = args.includes("-l") || args.includes("-la") || args.includes("-al");
       let entries = Object.keys(node);
@@ -438,11 +506,15 @@ const commandRegistry = [
       const target = args[0] || "~";
       const newPath = normalizePath(cwd, target);
       const node = getNode(FILESYSTEM, newPath);
-      if (node && typeof node === "object") {
+      if (!node) {
+        return `cd: no such file or directory: ${target}`;
+      }
+      // Only allow cd into directories (not files)
+      if (typeof node === "object" && !('content' in node)) {
         setCwd(newPath);
         return "";
       } else {
-        return `cd: no such file or directory: ${target}`;
+        return `cd: not a directory: ${target}`;
       }
     },
   },
@@ -495,6 +567,18 @@ const commandRegistry = [
 
 export default function BrowserTerminal() {
   const [lines, setLines] = useState([
+    "joe@debian",
+    "--------------------------",
+    "OS: Debian GNU/Linux 12 (Bookworm) x86_64",
+    "Host: BrowserTerminal (React)",
+    "Kernel: 6.1.0-0-amd64",
+    `Uptime: ${Math.floor(Math.random()*10+1)} hours`,
+    "Packages: 42 (simulated)",
+    "Shell: bash (simulated)",
+    "Resolution: 1280x720 (browser)",
+    "Terminal: BrowserTerminal.jsx",
+    "Theme: Default",
+    "--------------------------",
     "Welcome to the Browser Terminal!",
     "Type 'help' to see available commands.",
   ]);
