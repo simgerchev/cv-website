@@ -5,70 +5,20 @@ import ReactDOM from "react-dom";
 const FILESYSTEM = {
   home: {
     user: {
-      "readme.md": { content: "Welcome to your home directory!", mode: "0644", owner: "user" },
-      "first-level": {
-  "tasks.txt": { content: `Level 1 Tasks (Expert):\n1. Find the real flag hidden in a deeply nested folder.\n2. The file is encoded in base64. Decode it to get the flag.\n3. There are fake flags and decoy files.\n\nTip: Use find, cat, and base64 decoding.\n`, mode: "0644", owner: "user" },
-        Documents: {
-          "not_the_secret.txt": { content: "Just a decoy!", mode: "0644", owner: "user" },
-          "fake_flag.txt": { content: "FLAG-FAKE-1", mode: "0644", owner: "user" },
+        "readme.txt": { content: "Welcome to your home directory!", mode: "0644", owner: "user" },
+        "level1": {
+          "tasks.txt": { content: `Level 1: Sudo & Permissions\nA file called 'editme.txt' is owned by root. Find the sudo password, use sudo to take ownership, and edit the file to contain 'Mission Complete'.`, mode: "0644", owner: "user" },
+          ".sudo_password": { content: "hunter2", mode: "0644", owner: "user" },
+          "editme.txt": { content: "Edit me to win!", mode: "0644", owner: "root" },
         },
-        Deep: {
-          "deeper": {
-            "even_deeper": {
-              "real_flag.b64": { content: "RnVsbHkgRnVsbHkgRnVsbHkgRmxhZyBmb3VuZDogRXhwZXJ0IEV4cGVydCBFeHBlcnQgRmxhZy1FWFBFUlQ=", mode: "0644", owner: "user" }
-            },
-            "decoy.b64": { content: "RkxBRy1GQUtF", mode: "0644", owner: "user" }
-          }
-        }
-      },
-      "second-level": {
-        "tasks.txt": { content: `Level 2 Tasks (Expert):\n1. Create a file called completed.txt in your home directory.\n2. Write 'Victory!' inside completed.txt.\n3. Change its permissions to 600 and owner to root (requires sudo).\n4. Prove you did it by showing its contents and permissions.\n5. There is a fake completed.txt in a subfolder.\n\nTip: Use echo, touch, chmod, chown, and ls -l.\n`, mode: "0644", owner: "user" },
-        Hints: {
-          "clue1.txt": { content: "Check file permissions with ls -l.", mode: "0644", owner: "user" },
+        "level2": {
+          "tasks.txt": { content: `Level 2: Encoding\nA file called 'flag.b64' contains a base64-encoded flag. Decode it to reveal the flag and win.`, mode: "0644", owner: "user" },
+          "flag.b64": { content: "RkxBRy1MRVZFMjogWW91IGRlY29kZWQgdGhlIGZsYWch", mode: "0644", owner: "user" },
         },
-        Subfolder: {
-          "completed.txt": { content: "Not the real one!", mode: "0644", owner: "user" }
+        "level3": {
+          "tasks.txt": { content: `Level 3: File Creation & Permissions\nCreate a file called 'secret.txt' in this folder, write 'Top Secret' inside, and set its permissions to 600 so only you can read/write it.`, mode: "0644", owner: "user" },
+          // secret.txt will be created by the user
         },
-        // The real completed.txt starts as root-owned
-        "completed.txt": { content: "", mode: "0644", owner: "root" }
-      },
-      // Hide sudo password in a hidden file in home directory
-  ".sudo_password": { content: "hunter2", mode: "0644", owner: "user" },
-      "third-level": {
-        "tasks.txt": { content: `Level 3 Tasks (Expert):\n1. Find the sudo password hidden in a file with restricted permissions.\n2. Use sudo to access a locked file in Vault.\n3. The Vault contains a zip file.\n4. Unzip the file and find the flag inside.\n\nTip: Use sudo cat, unzip, and find the password first.\n`, mode: "0644", owner: "user" },
-        ".hidden": {
-          "password.txt": { content: "hunter2", mode: "0400", owner: "root" }
-        },
-        Vault: {
-          "locked.zip": { content: "UEsDBBQAAAAIAAAAIQAAAAAAAAAAAAAAAABwYXlsb2FkLnR4dFBLBQYAAAAAAQABADYAAABJQ0UgRmxhZyBmb3VuZDogRmxhZy1FWFBFUlQ=", mode: "0400", owner: "root" },
-          // base64-encoded zip with file payload.txt containing the flag
-        },
-      },
-      "fourth-level": {
-  "tasks.txt": { content: `Level 4 Tasks (Expert):\n1. Find and decode the base64 message in message.b64.\n2. The decoded message is a hint for another file.\n3. Use the hint to find and read the next flag.\n\nTip: Use base64 and follow the hint.\n`, mode: "0644", owner: "user" },
-  "message.b64": { content: "This is the hint: hint.txt", mode: "0644", owner: "user" },
-  "hint.txt": { content: "FLAG-LEVEL4-EXPERT: You followed the hint!", mode: "0644", owner: "user" },
-      },
-      "fifth-level": {
-        "tasks.txt": { content: `Level 5 Tasks (Expert):\n1. Use grep and sort to find the hidden flag in logs.txt.\n2. The flag is surrounded by noise, fake flags, and out-of-order lines.\n3. Only the correct flag counts.\n\nTip: grep for FLAG-EXPERT and sort the results.\n`, mode: "0644", owner: "user" },
-        "logs.txt": { content: "Info: All systems go\nFLAG-FAKE: Not this one\nWarning: Disk space low\nFLAG-EXPERT: Well done!\nError: Something went wrong\nFLAG-FAKE: Nope\nFLAG-EXPERT: You found another!\n", mode: "0644", owner: "user" },
-      },
-      "sixth-level": {
-        "tasks.txt": { content: `Level 6 Tasks (Expert):\n1. Use pipes to extract the last line from data.txt.\n2. The last line contains a code, but the code is hex encoded.\n3. Decode the code and use it to unlock code.txt.\n\nTip: Use cat data.txt | tail -1, then decode hex, then cat code.txt.\n`, mode: "0644", owner: "user" },
-        "data.txt": { content: "First line\nSecond line\nThird line\n434F44452D4C4556454C362D455h54504552", mode: "0644", owner: "user" },
-        "code.txt": { content: "FLAG-LEVEL6-EXPERT: You unlocked the hex code!", mode: "0644", owner: "user" },
-      },
-      "seventh-level": {
-        "tasks.txt": { content: `Level 7 Tasks (Expert):\n1. Move flag.txt to the folder called destination.\n2. Copy flag.txt to backup.txt in the same folder.\n3. Only the backup.txt contains the real flag.\n\nTip: Use mv and cp.\n`, mode: "0644", owner: "user" },
-        "flag.txt": { content: "Not the real flag!", mode: "0644", owner: "user" },
-        "destination": {
-          "backup.txt": { content: "FLAG-LEVEL7-EXPERT: Five operations complete!", mode: "0644", owner: "user" }
-        },
-      },
-      "eighth-level": {
-  "tasks.txt": { content: `Level 8 Tasks (Expert):\n1. Find the file owned by root (rootfile.txt).\n2. Change its owner to user using sudo chown.\n3. Edit the file to add your name.\n\nTip: Use sudo chown and echo.\n`, mode: "0644", owner: "user" },
-  "rootfile.txt": { content: "FLAG-LEVEL8-EXPERT: Ownership changed! Add your name here:", mode: "0644", owner: "root" },
-      },
     },
   },
   tmp: {},
@@ -79,12 +29,14 @@ function normalizePath(cwd, inputPath) {
   let path = inputPath.trim();
   if (!path) return cwd;
   if (path === "~") return "/home/user";
-  let parts;
-  if (path.startsWith("/")) {
-    parts = path.split("/").filter(Boolean);
-  } else {
-    parts = cwd.split("/").filter(Boolean).concat(path.split("/").filter(Boolean));
+  // If path is absolute, use as is
+  if (path.startsWith("/")) return path;
+  // If path looks like home/user or similar, treat as relative to root
+  if (!cwd || cwd === "/") {
+    return "/" + path.replace(/^\/+/, "");
   }
+  // Otherwise, resolve relative to cwd
+  let parts = cwd.split("/").filter(Boolean).concat(path.split("/").filter(Boolean));
   const stack = [];
   for (const part of parts) {
     if (part === ".") continue;
@@ -202,28 +154,6 @@ const commandRegistry = [
       const node = getNode(FILESYSTEM, filePath);
       if (typeof node !== "string") return `grep: cannot open '${args[1]}': No such file`;
       return node.split("\n").filter(line => line.includes(pattern)).join("\n");
-    },
-  },
-  {
-    name: "find",
-    description: "Find files and directories",
-    handler: ({ args, cwd }) => {
-      // Simple recursive find from cwd
-      function walk(node, path, results) {
-        if (typeof node === "object" && node !== null) {
-          for (const key of Object.keys(node)) {
-            walk(node[key], `${path}/${key}`, results);
-          }
-        } else {
-          results.push(path);
-        }
-      }
-      const startPath = normalizePath(cwd, args[0] || ".");
-      const node = getNode(FILESYSTEM, startPath);
-      if (!node) return `find: '${args[0] || '.'}': No such file or directory`;
-      const results = [];
-      walk(node, startPath, results);
-      return results.join("\n");
     },
   },
   {
@@ -455,12 +385,17 @@ const commandRegistry = [
     description: "List directory contents",
     handler: ({ cwd, args }) => {
       let targetPath = cwd;
-      // If a folder/file is specified as an argument, use it
       const folderArg = args.find(a => !a.startsWith("-"));
       if (folderArg) {
         targetPath = normalizePath(cwd, folderArg);
       }
-      const node = getNode(FILESYSTEM, targetPath);
+      let node = getNode(FILESYSTEM, targetPath);
+      // If not found, try root-relative path as fallback
+      if (!node && folderArg) {
+        let altPath = normalizePath("/", folderArg);
+        node = getNode(FILESYSTEM, altPath);
+        if (node) targetPath = altPath;
+      }
       if (!node) return `ls: cannot access '${folderArg || cwd}': No such file or directory`;
       if (typeof node !== "object" || ('content' in node)) return `ls: cannot access '${folderArg || cwd}': Not a directory`;
       let showAll = args.includes("-a") || args.includes("-la") || args.includes("-al");
