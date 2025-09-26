@@ -24,7 +24,7 @@ function App() {
               </>
             }
           />
-          <Route path="/terminal" element={<BrowserTerminal />} />
+          <Route path="/browser-terminal" element={<BrowserTerminal />} />
         </Routes>
       </div>
     </Router>
