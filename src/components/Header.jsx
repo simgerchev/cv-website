@@ -11,6 +11,7 @@ export default function Header() {
           <a href="/#skills" className="nav-link">SKILLS</a>
           <a href="/#projects" className="nav-link">PROJECTS</a>
           <Link to="/browser-terminal" className="nav-link">BROWSER TERMINAL</Link>
+          <Link to="/cyber-monk" className="nav-link">CYBER MONK</Link>
         </nav>
       </div>
     </header>
