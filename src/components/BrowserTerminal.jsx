@@ -756,13 +756,7 @@ export default function BrowserTerminal() {
             >
               {input.slice(0, cursorPos)}
             </span>
-            {/* Glowing | cursor absolutely positioned */}
-            {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? null : (
-              <span
-                className="browser-terminal-input-glow-cursor"
-                style={{ left: cursorLeft, position: 'absolute', top: -2, zIndex: 2 }}
-              >|</span>
-            )}
+            {/* Removed glowing cursor */}
             <input
               ref={inputRef}
               type="text"

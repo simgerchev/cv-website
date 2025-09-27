@@ -86,23 +86,7 @@ export default function CyberMonk() {
 	}
 
 	function handleInput(e) {
-		const value = e.target.value;
-		if (isMobileDevice()) {
-			setInput(value);
-			return;
-		}
-		if (measureRef.current && inputRef.current) {
-			measureRef.current.textContent = value;
-			const measureWidth = measureRef.current.offsetWidth;
-			const inputContainer = inputRef.current.parentElement;
-			const maxWidth = inputContainer.offsetWidth;
-			measureRef.current.textContent = value.slice(0, cursorPos);
-			if (measureWidth < maxWidth - 16) {
-				setInput(value);
-			}
-		} else {
-			setInput(value);
-		}
+		setInput(e.target.value);
 	}
 
 	function handleKeyDown(e) {
@@ -113,77 +97,24 @@ export default function CyberMonk() {
 	}
 
 
-					// Custom glowing cursor logic
-					const inputRef = useRef(null);
-					const measureRef = useRef(null);
-					const [cursorPos, setCursorPos] = useState(0);
-					const [cursorLeft, setCursorLeft] = useState(0);
-
-						useEffect(() => {
-							function isMobileDevice() {
-								return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-							}
-							if (isMobileDevice()) {
-								// On mobile, let input behave natively
-								return;
-							}
-							if (inputRef.current) {
-								const handler = () => setCursorPos(inputRef.current.selectionStart);
-								inputRef.current.addEventListener('keyup', handler);
-								inputRef.current.addEventListener('click', handler);
-								inputRef.current.addEventListener('input', handler);
-								return () => {
-									if (inputRef.current) {
-										inputRef.current.removeEventListener('keyup', handler);
-										inputRef.current.removeEventListener('click', handler);
-										inputRef.current.removeEventListener('input', handler);
-									}
-								};
-							}
-						}, [inputRef]);
-
-					useEffect(() => {
-						if (measureRef.current) {
-							setCursorLeft(measureRef.current.offsetWidth);
-						}
-					}, [input, cursorPos]);
-
-					// Render input with glowing cursor
-							const renderInputWithCursor = () => {
-								const left = input.slice(0, cursorPos);
-									const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-									return (
-										<div className="cybermonk-input-container">
-											{/* Static arrow at the start */}
-											<span className="cybermonk-arrow">&gt;</span>
-											<div className="cybermonk-input-measure-container">
-												{/* Hidden span to measure left part width, matching input styles exactly */}
-												<span
-													ref={measureRef}
-													className="cybermonk-input-measure-span"
-												>
-													{left}
-												</span>
-												{/* Glowing | cursor absolutely positioned */}
-												{!isMobileDevice && (
-													<span
-														className="cybermonk-input-glow-cursor"
-														style={{ left: cursorLeft }}
-													>|</span>
-												)}
-												<input
-													ref={inputRef}
-													type="text"
-													className="cybermonk-input"
-													value={input}
-													onChange={handleInput}
-													onKeyDown={handleKeyDown}
-													autoFocus
-												/>
-											</div>
-										</div>
-									);
-							};
+	const inputRef = useRef(null);
+	const renderInputWithCursor = () => (
+		<div className="cybermonk-input-container">
+			{/* Static arrow at the start */}
+			<span className="cybermonk-arrow">&gt;</span>
+			<div className="cybermonk-input-measure-container" style={{position: 'relative', flex: 1, display: 'flex', alignItems: 'center'}}>
+				<input
+					ref={inputRef}
+					type="text"
+					className="cybermonk-input"
+					value={input}
+					onChange={handleInput}
+					onKeyDown={handleKeyDown}
+					autoFocus
+				/>
+			</div>
+		</div>
+	);
 
 				return (
 					<div className="cybermonk-flex-container">
