@@ -552,7 +552,10 @@ export default function BrowserTerminal() {
     };
   }, [sudoMode]);
 
-  const prompt = `${sudoMode ? "root" : "user"}@site:${cwd}$`;
+  const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const prompt = isMobileDevice
+    ? `${sudoMode ? "r" : "u"}@s:${cwd}$`
+    : `${sudoMode ? "root" : "user"}@site:${cwd}$`;
 
   const handleInput = (e) => {
     const value = e.target.value;

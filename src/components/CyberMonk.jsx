@@ -120,6 +120,13 @@ export default function CyberMonk() {
 					const [cursorLeft, setCursorLeft] = useState(0);
 
 						useEffect(() => {
+							function isMobileDevice() {
+								return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+							}
+							if (isMobileDevice()) {
+								// On mobile, let input behave natively
+								return;
+							}
 							if (inputRef.current) {
 								const handler = () => setCursorPos(inputRef.current.selectionStart);
 								inputRef.current.addEventListener('keyup', handler);
