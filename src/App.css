@@ -1,3 +1,71 @@
+.browser-terminal-arrow {
+  font-size: 1.3em;
+  color: var(--accent);
+  margin-right: 0.3em;
+  text-shadow: 0 0 8px var(--accent), 0 0 16px var(--accent-dark);
+}
+/* BrowserTerminal growing cursor styles */
+.browser-terminal-input-glow-cursor {
+  position: absolute;
+  pointer-events: none;
+  font-size: 1.3em;
+  color: var(--accent);
+  text-shadow: 0 0 8px var(--accent), 0 0 16px var(--accent-dark);
+  animation: cybermonk-cursor-blink 1s steps(2, start) infinite;
+  z-index: 2;
+  left: 0;
+  top: 2px;
+  width: auto;
+  height: auto;
+  margin-left: 2px;
+}
+/* CyberMonk extracted styles from JSX */
+.cybermonk-input-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-family: inherit;
+  font-size: inherit;
+}
+.cybermonk-arrow {
+  font-size: 1.3em;
+  color: var(--accent);
+  margin-right: 0.3em;
+  text-shadow: 0 0 8px var(--accent), 0 0 16px var(--accent-dark);
+}
+.cybermonk-input-measure-container {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.cybermonk-input-measure-span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+  white-space: pre;
+  font-family: 'Fira Mono', monospace;
+  font-size: 1.15em;
+  letter-spacing: 0.5px;
+  padding: 2px 0;
+  border: none;
+  box-sizing: border-box;
+  background: transparent;
+  outline: none;
+  width: auto;
+  color: var(--terminal-text);
+}
+.cybermonk-side-flex {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.2rem 0;
+}
+.cybermonk-side-title {
+  margin-top: 0;
+}
 /* =========================
    Imports & Root Variables
    ========================= */
@@ -537,7 +605,7 @@ header .container {
   border: none;
   outline: none;
   width: 100%;
-  caret-color: var(--terminal-prompt);
+  caret-color: transparent; /* Hide native caret */
   letter-spacing: 0.5px;
   padding: 2px 0;
   transition: background 0.2s;
@@ -776,6 +844,7 @@ footer .social a {
 .cybermonk-input {
   color: var(--terminal-text);
   font-size: 1.15em;
+  font-family: 'Fira Mono', monospace;
   background: transparent;
   border: none;
   outline: none;
@@ -784,10 +853,35 @@ footer .social a {
   letter-spacing: 0.5px;
   padding: 2px 0;
   transition: background 0.2s;
+  position: relative;
+  caret-color: transparent; /* Hide native caret */
 }
+
 .cybermonk-input:focus {
-  background: rgba(127,255,212,0.10);
+  background: transparent;
   border-radius: 4px;
+}
+
+/* Arrow-shaped glowing cursor (>) for CyberMonk terminal input */
+.cybermonk-input-glow-cursor {
+  position: absolute;
+  pointer-events: none;
+  font-size: 1.3em;
+  color: var(--accent);
+  text-shadow: 0 0 8px var(--accent), 0 0 16px var(--accent-dark);
+  animation: cybermonk-cursor-blink 1s steps(2, start) infinite;
+  z-index: 2;
+  left: 0;
+  top: -2px;
+  width: auto;
+  height: auto;
+  /* Add a small left margin to push cursor right of text */
+  margin-left: 2px;
+}
+
+@keyframes cybermonk-cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.3; }
 }
 
 /* CyberMonk Responsive Flexbox Layout */
@@ -809,13 +903,10 @@ footer .social a {
   min-width: 320px;
   height: 100%;
   min-height: 320px;
-  background: linear-gradient(135deg, #181818 0%, #232526 100%);
   color: #e0eafc;
   font-family: 'Fira Mono', 'Oswald', Arial, Helvetica, sans-serif;
   padding: 2rem 1.5rem;
   box-sizing: border-box;
-  border: 1px solid #222;
-  box-shadow: 0 2px 16px rgba(30,41,59,0.18);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -836,6 +927,26 @@ footer .social a {
   font-size: 1em;
   margin-bottom: 0.7em;
   color: #e0eafc;
+}
+
+/* CyberMonk Side Screen Images Styling */
+.cybermonk-forest-img {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  display: block;
+  margin: 0 auto 1.2rem auto;
+  object-fit: cover;
+  border: 1px solid #222;
+}
+
+.cybermonk-monk-avatar {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+  background: #181818;
+  margin-right: 0.5rem;
 }
 
 @media (max-width: 900px) {

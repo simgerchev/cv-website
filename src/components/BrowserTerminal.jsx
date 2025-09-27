@@ -519,6 +519,10 @@ export default function BrowserTerminal() {
     "Type 'help' to see available commands.",
   ]);
   const [input, setInput] = useState("");
+  const inputRef = useRef(null);
+  const measureRef = useRef(null);
+  const [cursorPos, setCursorPos] = useState(0);
+  const [cursorLeft, setCursorLeft] = useState(0);
   const [cwd, setCwd] = useState("/home/user");
   const [sudoPrompt, setSudoPrompt] = useState(false);
   const [sudoCommand, setSudoCommand] = useState("");
@@ -550,7 +554,42 @@ export default function BrowserTerminal() {
 
   const prompt = `${sudoMode ? "root" : "user"}@site:${cwd}$`;
 
-  const handleInput = (e) => setInput(e.target.value);
+  const handleInput = (e) => {
+    const value = e.target.value;
+    if (measureRef.current && inputRef.current) {
+      measureRef.current.textContent = value;
+      const measureWidth = measureRef.current.offsetWidth;
+      const inputContainer = inputRef.current.parentElement;
+      const maxWidth = inputContainer.offsetWidth;
+      measureRef.current.textContent = value.slice(0, cursorPos);
+      if (measureWidth < maxWidth - 16) {
+        setInput(value);
+      }
+    } else {
+      setInput(value);
+    }
+  };
+  useEffect(() => {
+    if (inputRef.current) {
+      const handler = () => setCursorPos(inputRef.current.selectionStart);
+      inputRef.current.addEventListener('keyup', handler);
+      inputRef.current.addEventListener('click', handler);
+      inputRef.current.addEventListener('input', handler);
+      return () => {
+        if (inputRef.current) {
+          inputRef.current.removeEventListener('keyup', handler);
+          inputRef.current.removeEventListener('click', handler);
+          inputRef.current.removeEventListener('input', handler);
+        }
+      };
+    }
+  }, [inputRef]);
+
+  useEffect(() => {
+    if (measureRef.current) {
+      setCursorLeft(measureRef.current.offsetWidth);
+    }
+  }, [input, cursorPos]);
 
   /* Handle keydown events for the input field */
   const handleKeyDown = (e) => {
@@ -683,16 +722,45 @@ export default function BrowserTerminal() {
         )}
       </div>
       {!sudoPrompt && (
-        <div className="browser-terminal-input-row">
+        <div className="browser-terminal-input-row" style={{position: 'relative', width: '100%', display: 'flex', alignItems: 'center', fontFamily: 'inherit', fontSize: 'inherit'}}>
           <span className="browser-terminal-prompt">{prompt}</span>
-          <input
-            type="text"
-            className="browser-terminal-input"
-            value={input}
-            onChange={handleInput}
-            onKeyDown={handleKeyDown}
-            autoFocus
-          />
+          <span className="browser-terminal-arrow">&gt;</span>
+          <div style={{position: 'relative', flex: 1, display: 'flex', alignItems: 'center'}}>
+            {/* Hidden span to measure left part width, matching input styles exactly */}
+            <span
+              ref={measureRef}
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                visibility: 'hidden',
+                whiteSpace: 'pre',
+                fontFamily: 'Fira Mono, monospace',
+                fontSize: '1.15em',
+                letterSpacing: '0.5px',
+                padding: '2px 0',
+                border: 'none',
+                boxSizing: 'border-box',
+              }}
+            >
+              {input.slice(0, cursorPos)}
+            </span>
+            {/* Glowing | cursor absolutely positioned */}
+            <span
+              className="browser-terminal-input-glow-cursor"
+              style={{ left: cursorLeft, position: 'absolute', top: -2, zIndex: 2 }}
+            >|</span>
+            <input
+              ref={inputRef}
+              type="text"
+              className="browser-terminal-input"
+              value={input}
+              onChange={handleInput}
+              onKeyDown={handleKeyDown}
+              autoFocus
+              style={{position: 'relative', background: 'transparent', paddingLeft: 0, fontFamily: 'Fira Mono, monospace', fontSize: '1.15em', letterSpacing: '0.5px'}}
+            />
+          </div>
         </div>
       )}
     </div>

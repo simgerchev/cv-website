@@ -31,14 +31,14 @@ const projects = [
     title: "Browser Terminal",
     desc: "A web-based terminal emulator that runs in the browser, allowing users to interact with a simulated command line interface. Similar to the Overthewire Wargames.",
     tech: ["JavaScript", "React", "CSS"],
-    link: "https://github.com/simgerchev/browser-terminal"
+    link: "/browser-terminal"
   },
   {
     img: projectFifth,
     title: "CyberMonk",
     desc: "CyberMonk is a web-based terminal emulator game about a monk exploring a fantasy world through command-line commands. Similar to Terminus.",
     tech: ["JavaScript", "React", "CSS"],
-    link: "https://github.com/simgerchev/cybermonk"
+    link: "/cyber-monk"
   }
 ];
 
