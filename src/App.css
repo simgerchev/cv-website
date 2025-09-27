@@ -814,6 +814,31 @@ footer .social a {
   display: flex;
   flex-direction: column;
   padding: 2rem 1.5rem;
+  overflow-x: hidden;
+  box-sizing: border-box;
+.cybermonk-input-container {
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+@media (max-width: 600px) {
+  .cybermonk-terminal {
+    max-width: 100vw;
+    width: 100vw;
+    min-width: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  .cybermonk-input-container {
+    max-width: 100vw;
+    width: 100vw;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+}
 }
 
 .cybermonk-lines {

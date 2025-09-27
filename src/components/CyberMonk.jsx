@@ -1,6 +1,8 @@
 
 
 import React, { useState, useRef, useEffect } from "react";
+import monkAvatar from '../assets/project-pictures/monk-avatar.png';
+import gameForest from '../assets/project-pictures/forest-game.png';
 
 const LOCATIONS = {
 	forest: {
@@ -22,6 +24,9 @@ const INITIAL_STATE = {
 };
 
 function getPrompt(state) {
+	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+		return `m@f:${state.location}$`;
+	}
 	return `monk@fantasy:${state.location}$`;
 }
 
@@ -76,18 +81,23 @@ export default function CyberMonk() {
 		setLines(prev => [...prev, `${getPrompt(state)} ${cmdLine}`, output]);
 	}
 
+	function isMobileDevice() {
+		return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+	}
+
 	function handleInput(e) {
-		// Only allow input if the measured width of the text is less than the input container width
 		const value = e.target.value;
+		if (isMobileDevice()) {
+			setInput(value);
+			return;
+		}
 		if (measureRef.current && inputRef.current) {
-			// Temporarily set the measure span to the new value
 			measureRef.current.textContent = value;
 			const measureWidth = measureRef.current.offsetWidth;
 			const inputContainer = inputRef.current.parentElement;
 			const maxWidth = inputContainer.offsetWidth;
-			// Restore measure span to current cursor position
 			measureRef.current.textContent = value.slice(0, cursorPos);
-			if (measureWidth < maxWidth - 16) { // 16px buffer for cursor and padding
+			if (measureWidth < maxWidth - 16) {
 				setInput(value);
 			}
 		} else {
@@ -179,9 +189,9 @@ export default function CyberMonk() {
 							</div>
 						</div>
 						<div className="cybermonk-side-screen">
-							<img src="/src/assets/project-pictures/forest-game.png" alt="Forest Game" className="cybermonk-forest-img" />
+							<img src={gameForest} alt="Forest Game" className="cybermonk-forest-img" />
 							<div className="cybermonk-side-flex">
-								<img src="/src/assets/project-pictures/monk-avatar.png" alt="Monk Avatar" className="cybermonk-monk-avatar" />
+								<img src={monkAvatar} alt="Monk Avatar" className="cybermonk-monk-avatar" />
 								<div>
 									<h2 className="cybermonk-side-title">Monk Info</h2>
 									<p>Location: <strong>{state.location}</strong></p>
