@@ -3,6 +3,7 @@ import projectSecond from '../assets/project-pictures/project-second.jpg';
 import projectThird from '../assets/project-pictures/project-third.png';
 import projectFourth from '../assets/project-pictures/project-fourth.png';
 import projectFifth from '../assets/project-pictures/project-fifth.png';
+import { Link } from 'react-router-dom';
 
 const projects = [
   {
@@ -57,7 +58,11 @@ export default function Projects() {
                 <span className="tech-badge" key={i}>{tech}</span>
               ))}
             </div>
-            <a className="btn" href={proj.link} target="_blank" rel="noopener noreferrer">View Project</a>
+            {proj.link.startsWith('/') ? (
+              <Link className="btn" to={proj.link}>View Project</Link>
+            ) : (
+              <a className="btn" href={proj.link} target="_blank" rel="noopener noreferrer">View Project</a>
+            )}
           </div>
         ))}
       </div>

@@ -559,6 +559,10 @@ export default function BrowserTerminal() {
 
   const handleInput = (e) => {
     const value = e.target.value;
+    if (isMobileDevice) {
+      setInput(value);
+      return;
+    }
     if (measureRef.current && inputRef.current) {
       measureRef.current.textContent = value;
       const measureWidth = measureRef.current.offsetWidth;
@@ -573,6 +577,10 @@ export default function BrowserTerminal() {
     }
   };
   useEffect(() => {
+    if (isMobileDevice) {
+      // On mobile, let input behave natively
+      return;
+    }
     if (inputRef.current) {
       const handler = () => setCursorPos(inputRef.current.selectionStart);
       inputRef.current.addEventListener('keyup', handler);
@@ -749,10 +757,12 @@ export default function BrowserTerminal() {
               {input.slice(0, cursorPos)}
             </span>
             {/* Glowing | cursor absolutely positioned */}
-            <span
-              className="browser-terminal-input-glow-cursor"
-              style={{ left: cursorLeft, position: 'absolute', top: -2, zIndex: 2 }}
-            >|</span>
+            {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? null : (
+              <span
+                className="browser-terminal-input-glow-cursor"
+                style={{ left: cursorLeft, position: 'absolute', top: -2, zIndex: 2 }}
+              >|</span>
+            )}
             <input
               ref={inputRef}
               type="text"

@@ -151,6 +151,7 @@ export default function CyberMonk() {
 					// Render input with glowing cursor
 							const renderInputWithCursor = () => {
 								const left = input.slice(0, cursorPos);
+									const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 									return (
 										<div className="cybermonk-input-container">
 											{/* Static arrow at the start */}
@@ -164,10 +165,12 @@ export default function CyberMonk() {
 													{left}
 												</span>
 												{/* Glowing | cursor absolutely positioned */}
-												<span
-													className="cybermonk-input-glow-cursor"
-													style={{ left: cursorLeft }}
-												>|</span>
+												{!isMobileDevice && (
+													<span
+														className="cybermonk-input-glow-cursor"
+														style={{ left: cursorLeft }}
+													>|</span>
+												)}
 												<input
 													ref={inputRef}
 													type="text"
