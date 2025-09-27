@@ -733,3 +733,127 @@ footer .social a {
   flex: 1 1 400px;
   min-width: 300px;
 }
+
+/* CyberMonk Terminal - Website Integrated Styles (No Box Shadows, Browser Terminal Input) */
+.cybermonk-terminal {
+  background: var(--bg);
+  border-radius: 18px;
+  color: var(--text);
+  font-family: 'Fira Mono', 'Oswald', Arial, Helvetica, sans-serif;
+  max-width: 520px;
+  margin: 2rem auto;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+}
+
+.cybermonk-lines {
+  flex: 1;
+  overflow-y: auto;
+  font-size: 1.08em;
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  padding-right: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.cybermonk-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.cybermonk-prompt {
+  color: var(--accent);
+  background: var(--card-bg);
+  border-radius: 6px;
+  padding: 0.25rem 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.cybermonk-input {
+  color: var(--terminal-text);
+  font-size: 1.15em;
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  caret-color: var(--terminal-prompt);
+  letter-spacing: 0.5px;
+  padding: 2px 0;
+  transition: background 0.2s;
+}
+.cybermonk-input:focus {
+  background: rgba(127,255,212,0.10);
+  border-radius: 4px;
+}
+
+/* CyberMonk Responsive Flexbox Layout */
+.cybermonk-flex-container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: row;
+}
+
+.cybermonk-terminal {
+  flex: 1 1 340px;
+}
+
+.cybermonk-side-screen {
+  flex: 0 0 520px;
+  max-width: 520px;
+  min-width: 320px;
+  height: 100%;
+  min-height: 320px;
+  background: linear-gradient(135deg, #181818 0%, #232526 100%);
+  color: #e0eafc;
+  font-family: 'Fira Mono', 'Oswald', Arial, Helvetica, sans-serif;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+  border: 1px solid #222;
+  box-shadow: 0 2px 16px rgba(30,41,59,0.18);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: sticky;
+  top: var(--header-height);
+  align-self: flex-start;
+  overflow: visible;
+}
+
+.cybermonk-side-screen h2 {
+  font-size: 1.3em;
+  font-weight: 700;
+  margin-bottom: 0.7em;
+  color: var(--accent-dark);
+}
+
+.cybermonk-side-screen p, .cybermonk-side-screen code, .cybermonk-side-screen strong {
+  font-size: 1em;
+  margin-bottom: 0.7em;
+  color: #e0eafc;
+}
+
+@media (max-width: 900px) {
+  .cybermonk-flex-container {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+  .cybermonk-terminal, .cybermonk-side-screen {
+    min-width: 0;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .cybermonk-side-screen {
+    position: static;
+    max-width: 100%;
+    min-height: 120px;
+    padding: 1rem 0.5rem;
+    height: auto;
+  }
+}

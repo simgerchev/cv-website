@@ -88,22 +88,30 @@ export default function CyberMonk() {
 	}
 
 			return (
-				<div className="browser-terminal">
-					<div className="browser-terminal-lines" ref={terminalRef}>
-						{lines.map((line, idx) => (
-							<div key={idx}>{line}</div>
-						))}
+				<div className="cybermonk-flex-container">
+					<div className="cybermonk-terminal">
+						<div className="cybermonk-lines" ref={terminalRef}>
+							{lines.map((line, idx) => (
+								<div key={idx}>{line}</div>
+							))}
+						</div>
+						<div className="cybermonk-input-row">
+							<span className="cybermonk-prompt">{getPrompt(state)}</span>
+							<input
+								type="text"
+								className="cybermonk-input"
+								value={input}
+								onChange={handleInput}
+								onKeyDown={handleKeyDown}
+								autoFocus
+							/>
+						</div>
 					</div>
-					<div className="browser-terminal-input-row">
-						<span className="browser-terminal-prompt">{getPrompt(state)}</span>
-						<input
-							type="text"
-							className="browser-terminal-input"
-							value={input}
-							onChange={handleInput}
-							onKeyDown={handleKeyDown}
-							autoFocus
-						/>
+					<div className="cybermonk-side-screen">
+						{/* You can put any content here, e.g., info, stats, artwork, etc. */}
+						<h2 style={{marginTop:0}}>Monk Info</h2>
+						<p>Location: <strong>{state.location}</strong></p>
+						<p>Try commands like <code>help</code>, <code>ls</code>, <code>cd</code>...</p>
 					</div>
 				</div>
 			);
