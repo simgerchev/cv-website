@@ -8,6 +8,7 @@ import shadowGrove from '../assets/project-pictures/cyber-monk/shadow-grove.png'
 import crystalCavern from '../assets/project-pictures/cyber-monk/crystal-cavern.png';
 import ancientRuins from '../assets/project-pictures/cyber-monk/ancient-ruins.png';
 import skyBridge from '../assets/project-pictures/cyber-monk/sky-bridge.png';
+import graveyard from '../assets/project-pictures/cyber-monk/graveyard.png';
 
 const LOCATIONS = {
 	forest: {
@@ -23,24 +24,48 @@ const LOCATIONS = {
 		parent: "forest"
 	},
 	shadow_grove: {
-		description: "You enter a grove where the trees are twisted and the shadows seem alive. The path ends here, and you sense you should turn back.",
+		description: "You enter a grove where the trees are twisted and the shadows seem alive. The path ends here, and you sense you should turn back. In the shadows, you spot a pair of Holy Goggles [holy-goggles.sh].\n\nA whisper in the shadows: 'If you want to interact with objects or NPCs, write bash object-name.sh or npc-name.sh.'",
 		image: shadowGrove,
+		exits: { '.graveyard': '.graveyard' }, // .graveyard always present
+		parent: "forest_deeper",
+		items: {
+			'holy-goggles.sh': "#!/bin/bash\necho 'You put on the holy goggles. Suddenly, hidden places shimmer into view! You have learned the secret of the ls -la command.'"
+		}
+	},
+	".graveyard": {
+		description: "A hidden graveyard shrouded in mist. Ancient tombstones line the ground, and the air is thick with mystery.",
+		image: graveyard,
+		exits: { '.crypt': '.crypt' }, // .crypt only accessible from .graveyard
+		parent: "shadow_grove"
+	},
+	".crypt": {
+		description: "A hidden crypt lies beneath the grove, filled with ancient bones and forgotten secrets. The air is cold and heavy.",
+		image: graveyard, // Replace with a crypt image if available
 		exits: {},
-		parent: "forest_deeper"
+		parent: ".graveyard"
 	},
 	crystal_cavern: {
-		description: "A cavern glittering with giant crystals. The air hums with magical energy and a faint path leads deeper. On the floor, you spot a shimmering Crystal Lens and a dusty note.txt.",
+		description: "A cavern glittering with giant crystals. The air hums with magical energy and a faint path leads deeper. On the floor, you spot a shimmering Crystal Lens [crystal-lens.sh], and a dusty Note [note.txt].",
 		image: crystalCavern,
 		exits: { ancient_ruins: 'ancient_ruins' },
 		parent: "forest_deeper",
-		items: { 'note.txt': "Welcome, traveler! If you can read this, you have mastered the art of the cat command. Seek the secrets hidden in the ruins beyond." },
+		items: {
+			'note.txt': "Welcome, traveler! If you can read this, you have mastered the art of the cat command. Seek the secrets hidden in the ruins beyond.",
+			'crystal-lens.sh': "#!/bin/bash\necho 'You take the crystal lens and learn to read with it.'"
+		},
 		unlocks: 'cat'
 	},
 	ancient_ruins: {
 		description: "Moss-covered ruins of a forgotten civilization. Strange symbols glow faintly on the stone walls.",
 		image: ancientRuins,
-		exits: { sky_bridge: 'sky_bridge' },
+		exits: { sky_bridge: 'sky_bridge', '.secret-chamber': '.secret-chamber' }, // .secret-chamber always present
 		parent: "crystal_cavern"
+	},
+	".secret-chamber": {
+		description: "A hidden chamber behind a crumbling wall. Ancient artifacts and mysterious glyphs cover the surfaces, hinting at lost knowledge.",
+		image: ancientRuins, // Replace with a secret chamber image if available
+		exits: {},
+		parent: "ancient_ruins"
 	},
 	sky_bridge: {
 		description: "A narrow bridge of clouds connects two floating islands high above the world. The view is breathtaking.",
@@ -69,7 +94,7 @@ export default function CyberMonk() {
 						"You hold a book containing all the movements and actions you know.",
 						"Open your book with the 'help' command to see your options.",
 						LOCATIONS[INITIAL_STATE.location].description,
-						"Type 'cd deep' to enter the forest, 'cd ..' to go back, or 'help' to open your book."
+						"Type 'ls' to see available paths, 'cd forest_deep' to enter the forest, 'cd ..' to go back, or 'help' to open your book."
 					]);
 	const [input, setInput] = useState("");
 	const [state, setState] = useState(INITIAL_STATE);
@@ -82,7 +107,14 @@ export default function CyberMonk() {
 	}, [lines]);
 
 	function handleCommand(cmdLine) {
-						const [cmd, ...args] = cmdLine.trim().split(/\s+/);
+						let parts = cmdLine.trim().split(/\s+/);
+						let cmd = parts[0];
+						let args = parts.slice(1);
+						// Special handling for 'ls -la' as a single command
+						if (cmd === 'ls' && args[0] === '-la') {
+							cmd = 'ls -la';
+							args = args.slice(1);
+						}
 						let output = "";
 						let newState = { ...state };
 						switch (cmd) {
@@ -93,15 +125,32 @@ export default function CyberMonk() {
 									"- ls: List available paths from your location.\n" +
 									"- pwd: Show your current location.\n" +
 									(state.unlocked.includes('cat') ? "- cat <file>: Read notes and books you find.\n" : "") +
+									"- bash <item>.sh: Interact with items or NPCs.\n" +
 									"- help: Open your book of movements.\n" +
 									"- clear: Clear the terminal.";
 								break;
 							case "ls": {
 								const loc = LOCATIONS[state.location];
-								const exits = Object.keys(loc.exits).map(dir => dir + '/');
+								// Always hide hidden locations (starting with a dot)
+								const exits = Object.keys(loc.exits)
+									.filter(dir => !dir.startsWith('.'))
+									.map(dir => dir + '/');
 								const items = loc.items ? Object.keys(loc.items) : [];
 								const all = [...exits, ...items];
 								output = all.length > 0 ? all.join('  ') : "";
+								break;
+							}
+							case "ls -la": {
+								if (!state.unlocked.includes('ls -la')) {
+									output = "Unknown command. Type 'help' to open your book.";
+								} else {
+									const loc = LOCATIONS[state.location];
+									// Show all exits, including hidden ones (starting with a dot)
+									const exits = Object.keys(loc.exits).map(dir => dir + '/');
+									const items = loc.items ? Object.keys(loc.items) : [];
+									const all = [...exits, ...items];
+									output = all.length > 0 ? all.join('  ') : "";
+								}
 								break;
 							}
 							case "pwd":
@@ -115,8 +164,8 @@ export default function CyberMonk() {
 										newState.history = [...(state.history || []), state.location];
 										newState.location = parent;
 										output = LOCATIONS[newState.location].description;
-										// Unlock command if present
-										if (LOCATIONS[newState.location].unlocks && !state.unlocked.includes(LOCATIONS[newState.location].unlocks)) {
+										// Unlock command if present, but skip 'cat' (only unlock via bash crystal-lens.sh)
+										if (LOCATIONS[newState.location].unlocks && LOCATIONS[newState.location].unlocks !== 'cat' && !state.unlocked.includes(LOCATIONS[newState.location].unlocks)) {
 											newState.unlocked = [...state.unlocked, LOCATIONS[newState.location].unlocks];
 											output += `\nYou have discovered the secret of the '${LOCATIONS[newState.location].unlocks}' command!`;
 										}
@@ -129,10 +178,14 @@ export default function CyberMonk() {
 										newState.history = [...(state.history || []), state.location];
 										newState.location = exitsObj[dir];
 										output = LOCATIONS[newState.location].description;
-										// Unlock command if present
-										if (LOCATIONS[exitsObj[dir]].unlocks && !state.unlocked.includes(LOCATIONS[exitsObj[dir]].unlocks)) {
+										// Show voice message if entering crystal_cavern
+										if (exitsObj[dir] === "crystal_cavern") {
+											output += "\n\nA mysterious voice echoes in the cavern: 'If you wish to interact with items or NPCs, type bash item_name.sh or bash npc_name.sh.'";
+										}
+										// Unlock command if present, but skip 'cat' (only unlock via bash crystal-lens.sh)
+										if (LOCATIONS[exitsObj[dir]].unlocks && LOCATIONS[exitsObj[dir]].unlocks !== 'cat' && !state.unlocked.includes(LOCATIONS[exitsObj[dir]].unlocks)) {
 											newState.unlocked = [...state.unlocked, LOCATIONS[exitsObj[dir]].unlocks];
-											output += `\nYou have discovered the secret of the '${LOCATIONS[exitsObj[dir]].unlocks}' command!`;
+											// Do not show the 'cat' secret message here; it will be shown after bash crystal-lens.sh
 										}
 									} else {
 										output = "No such path.";
@@ -141,7 +194,7 @@ export default function CyberMonk() {
 								break;
 							case "cat":
 								if (!state.unlocked.includes('cat')) {
-									output = "You don't know how to read notes yet. Perhaps something in the cavern can help you.";
+									output = "Unknown command. Type 'help' to open your book.";
 								} else {
 									const loc = LOCATIONS[state.location];
 									const file = args[0];
@@ -152,6 +205,28 @@ export default function CyberMonk() {
 									}
 								}
 								break;
+							case "bash": {
+								const loc = LOCATIONS[state.location];
+								const script = args[0];
+								if (loc.items && loc.items[script]) {
+									if (script === "crystal-lens.sh") {
+										output = "You take the crystal lens and learn to read with it.\n\nYou have discovered the secret of the 'cat' command!\nYou can now read notes and books you find.\nUsage: cat <file>\nTry it now with: cat note.txt";
+										if (!state.unlocked.includes('cat')) {
+											newState.unlocked = [...state.unlocked, 'cat'];
+										}
+									} else if (script === "holy-goggles.sh") {
+										output = "You put on the holy goggles. Suddenly, hidden places shimmer into view!\nYou have discovered the secret of the 'ls -la' command!\nYou can now find hidden rooms in shadowy places.\nUsage: ls -la";
+										if (!state.unlocked.includes('ls -la')) {
+											newState.unlocked = [...state.unlocked, 'ls -la'];
+										}
+									} else {
+										output = loc.items[script];
+									}
+								} else {
+									output = "bash: command not found or script not available here.";
+								}
+								break;
+							}
 							case "clear":
 								setLines([]);
 								return;
@@ -216,7 +291,7 @@ export default function CyberMonk() {
 												<div>
 													<h2 className="cybermonk-side-title">Monk Info</h2>
 													<p>Location: <strong>{state.location}</strong></p>
-													  <p>Try commands like <code>help</code>, <code>cd deep</code>, <code>cd ..</code>...</p>
+													  <p><strong>Unlocked commands:</strong> {state.unlocked.length > 0 ? state.unlocked.join(', ') : 'None yet'}</p>
 												</div>
 											</div>
 										</div>
