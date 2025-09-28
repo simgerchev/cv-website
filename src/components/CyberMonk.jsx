@@ -89,16 +89,25 @@ function getPrompt(state) {
 }
 
 export default function CyberMonk() {
-					const [lines, setLines] = useState([
-						"Welcome, CyberMonk!",
-						"You hold a book containing all the movements and actions you know.",
-						"Open your book with the 'help' command to see your options.",
-						LOCATIONS[INITIAL_STATE.location].description,
-						"Type 'ls' to see available paths, 'cd forest_deep' to enter the forest, 'cd ..' to go back, or 'help' to open your book."
-					]);
-	const [input, setInput] = useState("");
-	const [state, setState] = useState(INITIAL_STATE);
-	const terminalRef = useRef(null);
+						// Load progression from localStorage if available
+						const savedState = (() => {
+							try {
+								const raw = localStorage.getItem('cyberMonkState');
+								return raw ? JSON.parse(raw) : null;
+							} catch {
+								return null;
+							}
+						})();
+						const [lines, setLines] = useState([
+							"Welcome, CyberMonk!",
+							"You hold a book containing all the movements and actions you know.",
+							"Open your book with the 'help' command to see your options.",
+							LOCATIONS[savedState?.location || INITIAL_STATE.location].description,
+							"Type 'ls' to see available paths, 'cd forest_deep' to enter the forest, 'cd ..' to go back, or 'help' to open your book."
+						]);
+						const [input, setInput] = useState("");
+						const [state, setState] = useState(savedState || INITIAL_STATE);
+						const terminalRef = useRef(null);
 
 	useEffect(() => {
 		if (terminalRef.current) {
@@ -118,17 +127,34 @@ export default function CyberMonk() {
 						let output = "";
 						let newState = { ...state };
 						switch (cmd) {
+							case "reset":
+								localStorage.removeItem('cyberMonkState');
+								setState(INITIAL_STATE);
+								setLines([
+									"Welcome, CyberMonk!",
+									"You hold a book containing all the movements and actions you know.",
+									"Open your book with the 'help' command to see your options.",
+									LOCATIONS[INITIAL_STATE.location].description,
+									"Type 'ls' to see available paths, 'cd forest_deep' to enter the forest, 'cd ..' to go back, or 'help' to open your book."
+								]);
+								return;
 							case "help":
-								output = "You open your book. Available movements and actions:\n" +
-									"- cd <location>: Change to a new location (e.g. cd forest_deeper, cd crystal_cavern).\n" +
-									"- cd ..: Go to the previous location.\n" +
-									"- ls: List available paths from your location.\n" +
-									"- pwd: Show your current location.\n" +
-									(state.unlocked.includes('cat') ? "- cat <file>: Read notes and books you find.\n" : "") +
-									"- bash <item>.sh: Interact with items or NPCs.\n" +
-									"- help: Open your book of movements.\n" +
-									"- clear: Clear the terminal.";
-								break;
+								const helpCommands = [
+									"You open your book. Available movements and actions:",
+									"- cd <location>: Change to a new location (e.g. cd forest_deeper, cd crystal_cavern).",
+									"- cd ..: Go to the previous location.",
+									"- ls: List available paths from your location.",
+									state.unlocked.includes('ls -la') ? "- ls -la: List all paths, including hidden ones." : null,
+									"- pwd: Show your current location.",
+									state.unlocked.includes('cat') ? "- cat <file>: Read notes and books you find." : null,
+									"- bash <item>.sh: Interact with items or NPCs.",
+									"- help: Open your book of movements.",
+									"- clear: Clear the terminal.",
+									"- reset: Reset your progress and start over."
+								].filter(Boolean);
+								// Output each command as a separate line in the terminal
+								helpCommands.forEach(cmd => setLines(prev => [...prev, cmd]));
+								return;
 							case "ls": {
 								const loc = LOCATIONS[state.location];
 								// Always hide hidden locations (starting with a dot)
@@ -233,8 +259,12 @@ export default function CyberMonk() {
 							default:
 								output = "Unknown command. Type 'help' to open your book.";
 						}
-		setState(newState);
-		setLines(prev => [...prev, `${getPrompt(state)} ${cmdLine}`, output]);
+			setState(newState);
+			setLines(prev => [...prev, `${getPrompt(state)} ${cmdLine}`, output]);
+			// Save progression to localStorage
+			try {
+				localStorage.setItem('cyberMonkState', JSON.stringify(newState));
+			} catch {}
 	}
 
 	function isMobileDevice() {
