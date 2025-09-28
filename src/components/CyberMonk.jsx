@@ -234,7 +234,7 @@ export default function CyberMonk() {
 							case "bash": {
 								const loc = LOCATIONS[state.location];
 								const script = args[0];
-								if (loc.items && loc.items[script]) {
+								if (loc.items && loc.items[script] && script.endsWith('.sh')) {
 									if (script === "crystal-lens.sh") {
 										output = "You take the crystal lens and learn to read with it.\n\nYou have discovered the secret of the 'cat' command!\nYou can now read notes and books you find.\nUsage: cat <file>\nTry it now with: cat note.txt";
 										if (!state.unlocked.includes('cat')) {
