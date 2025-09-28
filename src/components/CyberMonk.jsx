@@ -1,48 +1,59 @@
 
 
 import React, { useState, useRef, useEffect } from "react";
-import monkAvatar from '../assets/project-pictures/monk-avatar.png';
-import gameForest from '../assets/project-pictures/forest-game.png';
-import fantasyForest from '../assets/project-pictures/fantasy-forest-game.png';
+import monkAvatar from '../assets/project-pictures/cyber-monk/monk-avatar.png';
+import gameForest from '../assets/project-pictures/cyber-monk/forest-game.png';
+import fantasyForest from '../assets/project-pictures/cyber-monk/fantasy-forest-game.png';
+import shadowGrove from '../assets/project-pictures/cyber-monk/shadow-grove.png';
+import crystalCavern from '../assets/project-pictures/cyber-monk/crystal-cavern.png';
+import ancientRuins from '../assets/project-pictures/cyber-monk/ancient-ruins.png';
+import skyBridge from '../assets/project-pictures/cyber-monk/sky-bridge.png';
 
 const LOCATIONS = {
-	entrance: {
+	forest: {
 		description: "You stand at the entrance to a mysterious forest. The path ahead looks inviting.",
 		image: gameForest,
-		exits: { deep: "deep" },
+		exits: { forest_deeper: "forest_deeper" },
 		parent: null
 	},
-	deep: {
-			description: "You venture deeper into the forest. The trees grow denser and the air feels magical. Two paths lie ahead: one leads to a shadowy grove, the other to a glittering cavern.",
-			image: fantasyForest,
-			exits: { 'shadow-grove': 'shadow-grove', 'crystal-cavern': 'crystal-cavern' },
-			parent: "entrance"
+	forest_deeper: {
+		description: "You venture deeper into the forest. The trees grow denser and the air feels magical. Two paths lie ahead: one leads to a shadowy grove, the other to a glittering cavern.",
+		image: fantasyForest,
+		exits: { shadow_grove: 'shadow_grove', crystal_cavern: 'crystal_cavern' },
+		parent: "forest"
 	},
-	'shadow-grove': {
+	shadow_grove: {
 		description: "You enter a grove where the trees are twisted and the shadows seem alive. The path ends here, and you sense you should turn back.",
+		image: shadowGrove,
 		exits: {},
-		parent: "deep"
+		parent: "forest_deeper"
 	},
-	'crystal-cavern': {
-		description: "A cavern glittering with giant crystals. The air hums with magical energy and a faint path leads deeper.",
-		exits: { 'ancient-ruins': 'ancient-ruins' },
-		parent: "deep"
+	crystal_cavern: {
+		description: "A cavern glittering with giant crystals. The air hums with magical energy and a faint path leads deeper. On the floor, you spot a shimmering Crystal Lens and a dusty note.txt.",
+		image: crystalCavern,
+		exits: { ancient_ruins: 'ancient_ruins' },
+		parent: "forest_deeper",
+		items: { 'note.txt': "Welcome, traveler! If you can read this, you have mastered the art of the cat command. Seek the secrets hidden in the ruins beyond." },
+		unlocks: 'cat'
 	},
-	'ancient-ruins': {
+	ancient_ruins: {
 		description: "Moss-covered ruins of a forgotten civilization. Strange symbols glow faintly on the stone walls.",
-		exits: { 'sky-bridge': 'sky-bridge' },
-		parent: "crystal-cavern"
+		image: ancientRuins,
+		exits: { sky_bridge: 'sky_bridge' },
+		parent: "crystal_cavern"
 	},
-	'sky-bridge': {
+	sky_bridge: {
 		description: "A narrow bridge of clouds connects two floating islands high above the world. The view is breathtaking.",
+		image: skyBridge,
 		exits: {},
-		parent: "ancient-ruins"
+		parent: "ancient_ruins"
 	}
 };
 
 const INITIAL_STATE = {
-	location: "entrance",
-	history: []
+	location: "forest",
+	history: [],
+	unlocked: []
 };
 
 function getPrompt(state) {
@@ -77,18 +88,22 @@ export default function CyberMonk() {
 						switch (cmd) {
 							case "help":
 								output = "You open your book. Available movements and actions:\n" +
-									"- cd <location>: Change to a new location (e.g. cd deep).\n" +
+									"- cd <location>: Change to a new location (e.g. cd forest_deeper, cd crystal_cavern).\n" +
 									"- cd ..: Go to the previous location.\n" +
 									"- ls: List available paths from your location.\n" +
 									"- pwd: Show your current location.\n" +
+									(state.unlocked.includes('cat') ? "- cat <file>: Read notes and books you find.\n" : "") +
 									"- help: Open your book of movements.\n" +
 									"- clear: Clear the terminal.";
 								break;
-							case "ls":
+							case "ls": {
 								const loc = LOCATIONS[state.location];
-								const exits = Object.keys(loc.exits).map(dir => dir + "/").join("  ");
-								output = exits ? `Paths: ${exits}` : "No exits here.";
+								const exits = Object.keys(loc.exits).map(dir => dir + '/');
+								const items = loc.items ? Object.keys(loc.items) : [];
+								const all = [...exits, ...items];
+								output = all.length > 0 ? all.join('  ') : "";
 								break;
+							}
 							case "pwd":
 								output = state.location;
 								break;
@@ -100,6 +115,11 @@ export default function CyberMonk() {
 										newState.history = [...(state.history || []), state.location];
 										newState.location = parent;
 										output = LOCATIONS[newState.location].description;
+										// Unlock command if present
+										if (LOCATIONS[newState.location].unlocks && !state.unlocked.includes(LOCATIONS[newState.location].unlocks)) {
+											newState.unlocked = [...state.unlocked, LOCATIONS[newState.location].unlocks];
+											output += `\nYou have discovered the secret of the '${LOCATIONS[newState.location].unlocks}' command!`;
+										}
 									} else {
 										output = "No previous location.";
 									}
@@ -109,8 +129,26 @@ export default function CyberMonk() {
 										newState.history = [...(state.history || []), state.location];
 										newState.location = exitsObj[dir];
 										output = LOCATIONS[newState.location].description;
+										// Unlock command if present
+										if (LOCATIONS[exitsObj[dir]].unlocks && !state.unlocked.includes(LOCATIONS[exitsObj[dir]].unlocks)) {
+											newState.unlocked = [...state.unlocked, LOCATIONS[exitsObj[dir]].unlocks];
+											output += `\nYou have discovered the secret of the '${LOCATIONS[exitsObj[dir]].unlocks}' command!`;
+										}
 									} else {
 										output = "No such path.";
+									}
+								}
+								break;
+							case "cat":
+								if (!state.unlocked.includes('cat')) {
+									output = "You don't know how to read notes yet. Perhaps something in the cavern can help you.";
+								} else {
+									const loc = LOCATIONS[state.location];
+									const file = args[0];
+									if (loc.items && loc.items[file]) {
+										output = loc.items[file];
+									} else {
+										output = `No such file '${file}' here.`;
 									}
 								}
 								break;
