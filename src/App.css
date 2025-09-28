@@ -1,3 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
+/* =========================
+  Imports & Root Variables
+  ========================= */
+
+:root {
+    --accent: #F20505;
+    --accent-dark: #BF0404;
+    --bg: #0D0D0D;
+    --bg-header: #ebf2eb0c;
+    --card-bg: #ebf2eb0c;
+    --text: #EBF2EB;
+    --text-secondary: #EBF2EB;
+    --gray: #BF0404;
+    --header-height: 90px;
+  --terminal-bg: #0D0D0D;
+  --terminal-border: #BF0404;
+  --terminal-shadow: 0 8px 32px rgba(191, 4, 4, 0.18);
+  --terminal-text: #EBF2EB;
+  --terminal-prompt: #F20505;
+  --terminal-prompt-glow: #BF0404;
+  --terminal-error: #F20505;
+  --terminal-success: #EBF2EB;
+  --terminal-arg: #BF0404;
+  --terminal-path: #F20505;
+  --terminal-comment: #BF0404;
+  --terminal-scrollbar: #731A2B;
+  --terminal-scrollbar-bg: #181818;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 .browser-terminal-arrow {
   font-size: 1.3em;
   color: var(--accent);
@@ -66,42 +102,7 @@
 .cybermonk-side-title {
   margin-top: 0;
 }
-/* =========================
-   Imports & Root Variables
-   ========================= */
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
 
-:root {
-    --accent: #F20505;
-    --accent-dark: #BF0404;
-    --bg: #0D0D0D;
-    --bg-header: #ebf2eb0c;
-    --card-bg: #ebf2eb0c;
-    --text: #EBF2EB;
-    --text-secondary: #EBF2EB;
-    --gray: #BF0404;
-    --header-height: 90px;
-  --terminal-bg: #0D0D0D;
-  --terminal-border: #BF0404;
-  --terminal-shadow: 0 8px 32px rgba(191, 4, 4, 0.18);
-  --terminal-text: #EBF2EB;
-  --terminal-prompt: #F20505;
-  --terminal-prompt-glow: #BF0404;
-  --terminal-error: #F20505;
-  --terminal-success: #EBF2EB;
-  --terminal-arg: #BF0404;
-  --terminal-path: #F20505;
-  --terminal-comment: #BF0404;
-  --terminal-scrollbar: #731A2B;
-  --terminal-scrollbar-bg: #181818;
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 
 @media (max-width: 800px) {
   :root {
@@ -611,7 +612,7 @@ header .container {
   transition: background 0.2s;
 }
 .browser-terminal-input:focus {
-  background: rgba(127,255,212,0.10);
+  background: rgba(255, 127, 127, 0.1);
   border-radius: 4px;
 }
 
@@ -874,16 +875,15 @@ footer .social a {
   border: none;
   outline: none;
   width: 100%;
-  caret-color: var(--terminal-prompt);
+  caret-color: transparent; /* Hide native caret */
   letter-spacing: 0.5px;
   padding: 2px 0;
   transition: background 0.2s;
   position: relative;
-  caret-color: transparent; /* Hide native caret */
 }
 
 .cybermonk-input:focus {
-  background: transparent;
+  background: rgba(255, 127, 127, 0.1);
   border-radius: 4px;
 }
 

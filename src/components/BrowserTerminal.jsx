@@ -520,9 +520,6 @@ export default function BrowserTerminal() {
   ]);
   const [input, setInput] = useState("");
   const inputRef = useRef(null);
-  const measureRef = useRef(null);
-  const [cursorPos, setCursorPos] = useState(0);
-  const [cursorLeft, setCursorLeft] = useState(0);
   const [cwd, setCwd] = useState("/home/user");
   const [sudoPrompt, setSudoPrompt] = useState(false);
   const [sudoCommand, setSudoCommand] = useState("");
@@ -558,49 +555,9 @@ export default function BrowserTerminal() {
     : `${sudoMode ? "root" : "user"}@site:${cwd}$`;
 
   const handleInput = (e) => {
-    const value = e.target.value;
-    if (isMobileDevice) {
-      setInput(value);
-      return;
-    }
-    if (measureRef.current && inputRef.current) {
-      measureRef.current.textContent = value;
-      const measureWidth = measureRef.current.offsetWidth;
-      const inputContainer = inputRef.current.parentElement;
-      const maxWidth = inputContainer.offsetWidth;
-      measureRef.current.textContent = value.slice(0, cursorPos);
-      if (measureWidth < maxWidth - 16) {
-        setInput(value);
-      }
-    } else {
-      setInput(value);
-    }
+    setInput(e.target.value);
   };
-  useEffect(() => {
-    if (isMobileDevice) {
-      // On mobile, let input behave natively
-      return;
-    }
-    if (inputRef.current) {
-      const handler = () => setCursorPos(inputRef.current.selectionStart);
-      inputRef.current.addEventListener('keyup', handler);
-      inputRef.current.addEventListener('click', handler);
-      inputRef.current.addEventListener('input', handler);
-      return () => {
-        if (inputRef.current) {
-          inputRef.current.removeEventListener('keyup', handler);
-          inputRef.current.removeEventListener('click', handler);
-          inputRef.current.removeEventListener('input', handler);
-        }
-      };
-    }
-  }, [inputRef]);
-
-  useEffect(() => {
-    if (measureRef.current) {
-      setCursorLeft(measureRef.current.offsetWidth);
-    }
-  }, [input, cursorPos]);
+  // Removed cursor position and width restriction logic for desktop devices
 
   /* Handle keydown events for the input field */
   const handleKeyDown = (e) => {
@@ -736,27 +693,7 @@ export default function BrowserTerminal() {
         <div className="browser-terminal-input-row" style={{position: 'relative', width: '100%', display: 'flex', alignItems: 'center', fontFamily: 'inherit', fontSize: 'inherit'}}>
           <span className="browser-terminal-prompt">{prompt}</span>
           <span className="browser-terminal-arrow">&gt;</span>
-          <div style={{position: 'relative', flex: 1, display: 'flex', alignItems: 'center'}}>
-            {/* Hidden span to measure left part width, matching input styles exactly */}
-            <span
-              ref={measureRef}
-              style={{
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                visibility: 'hidden',
-                whiteSpace: 'pre',
-                fontFamily: 'Fira Mono, monospace',
-                fontSize: '1.15em',
-                letterSpacing: '0.5px',
-                padding: '2px 0',
-                border: 'none',
-                boxSizing: 'border-box',
-              }}
-            >
-              {input.slice(0, cursorPos)}
-            </span>
-            {/* Removed glowing cursor */}
+          <div style={{flex: 1}}>
             <input
               ref={inputRef}
               type="text"
@@ -765,7 +702,6 @@ export default function BrowserTerminal() {
               onChange={handleInput}
               onKeyDown={handleKeyDown}
               autoFocus
-              style={{position: 'relative', background: 'transparent', paddingLeft: 0, fontFamily: 'Fira Mono, monospace', fontSize: '1.15em', letterSpacing: '0.5px'}}
             />
           </div>
         </div>
