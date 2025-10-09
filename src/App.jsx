@@ -11,37 +11,27 @@ import Podvigh from './components/Podvigh';
 
 function App() {
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <div className="app">
         <Header />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Intro />
-                <Footer />
-              </>
-            }
-          />
-          <Route path="/skills" element={
-            <>
-              <Skills />
-              <Footer />
-            </>
-            } 
-          />
-          <Route path="/projects" element={
-            <>
-              <Projects />
-              <Footer />
-            </>
-            } 
-          />
-          <Route path="/browser-terminal" element={<BrowserTerminal />} />
-          <Route path="/cyber-monk" element={<CyberMonk />} />
-          <Route path="/podvigh" element={<Podvigh />} />
-        </Routes>
+        <main className="main-content">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Intro />
+                </>
+              }
+            />
+            <Route path="/skills" element={<Skills />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/browser-terminal" element={<BrowserTerminal />} />
+            <Route path="/cyber-monk" element={<CyberMonk />} />
+            <Route path="/podvigh" element={<Podvigh />} />
+          </Routes>
+        </main>
+        <Footer />
       </div>
     </Router>
   );
