@@ -414,120 +414,6 @@ header .container {
 }
 
 /* =========================
-   Bible Verse Card
-   ========================= */
-.bible-verse-card,
-.bible-verse-card.fancy {
-  animation: fadeIn 1s;
-  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-dark) 100%);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(51,134,255,0.18);
-  color: #fff;
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-  margin: 40px auto;
-  max-width: 520px;
-  padding: 36px 28px 24px 28px;
-  position: relative;
-  text-align: center;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(30px);}
-  to   { opacity: 1; transform: translateY(0);}
-}
-
-.bible-verse-quote-icon {
-  font-size: 2.8rem;
-  left: 24px;
-  opacity: 0.18;
-  pointer-events: none;
-  position: absolute;
-  top: 18px;
-}
-
-.bible-verse-text {
-  font-size: 1.35rem;
-  font-style: italic;
-  letter-spacing: 0.2px;
-  line-height: 1.7;
-  margin: 0 0 18px 0;
-  padding: 0 18px;
-}
-
-.bible-verse-ref {
-  color: #e0eaff;
-  font-size: 1.05rem;
-  letter-spacing: 1px;
-  margin-top: 8px;
-  opacity: 0.85;
-}
-
-.bible-verse-loading {
-  color: #e0eaff;
-  font-size: 1rem;
-  opacity: 0.7;
-}
-
-.bible-verse-refresh {
-  align-items: center;
-  background: rgba(255,255,255,0.10);
-  border: none;
-  border-radius: 50%;
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-  font-size: 1.2rem;
-  height: 32px;
-  justify-content: center;
-  position: absolute;
-  right: 24px;
-  top: 18px;
-  transition: background 0.2s;
-  width: 32px;
-}
-.bible-verse-refresh:hover {
-  background: rgba(255,255,255,0.22);
-}
-
-/* =========================
-   Random Painting Card
-   ========================= */
-.famous-painting-card {
-  background: var(--bg-header);
-  border-radius: 16px;
-  color: var(--text);
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-  margin: 2em auto;
-  max-width: 420px;
-  padding: 2em 1.5em;
-  text-align: center;
-  transition: box-shadow 0.2s, background 0.2s;
-}
-
-.famous-painting-card h3 {
-  color: var(--accent);
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-  font-size: 1.3em;
-  letter-spacing: 1px;
-  margin-bottom: 1em;
-}
-
-.famous-painting-card img {
-  background: #23272a;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(51,134,255,0.10);
-  margin-bottom: 1em;
-  max-height: 400px;
-  max-width: 100%;
-}
-
-.famous-painting-card strong {
-  color: var(--accent);
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-  font-size: 1.1em;
-}
-
-/* =========================
    Browser Terminal (Enhanced Bash-like)
    ========================= */
 .browser-terminal {
@@ -1179,4 +1065,104 @@ footer .social a {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
+}
+
+/* --- Skills Section --- */
+.skills-section {
+  margin: 40px auto;
+  max-width: 800px;
+  padding: 40px 20px;
+  background: var(--bg-header);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+
+.skills-title {
+  color: var(--accent);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  margin-bottom: 32px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.skills-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.skills-group {
+  min-width: 200px;
+}
+
+.skills-group h3 {
+  color: var(--accent-dark);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.skills-tags {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.skills-tags li {
+  background: var(--gray, #23272f);
+  color: #fff;
+  border-radius: 6px;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  padding: 4px 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  margin-bottom: 0.3em;
+  transition: background 0.2s;
+}
+
+.skills-tags li:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.currently-learning {
+  align-items: center;
+  background: var(--card-bg, #23272f);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  color: #fff;
+  display: flex;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-size: 1.15rem;
+  gap: 14px;
+  margin: 36px auto 0 auto;
+  max-width: 420px;
+  padding: 18px 24px;
+  justify-content: center;
+}
+
+.currently-learning-text strong {
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+@media (max-width: 700px) {
+  .skills-groups {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
 }

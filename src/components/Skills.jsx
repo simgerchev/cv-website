@@ -30,43 +30,42 @@ const devopsData = [
 export default function Skills() {
   return (
     <section className="skills-section" id="skills">
-      <h2>Skills Overview</h2>
-      <div className="charts-container">
-        <div className="chart-block">
+      <h2 className="skills-title">Skills Overview</h2>
+      <div className="skills-groups">
+        <div className="skills-group">
           <h3>Languages</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <RadarChart outerRadius={90} data={languageData}>
-              <PolarGrid />
-              <PolarAngleAxis dataKey="subject" />
-              <Radar name="Languages" dataKey="A" stroke="#F00000" fill="#F00000" fillOpacity={0.6} />
-            </RadarChart>
-          </ResponsiveContainer>
+          <ul className="skills-tags">
+            <li>PHP</li>
+            <li>JavaScript</li>
+            <li>Python</li>
+            <li>C#</li>
+            <li>Go</li>
+          </ul>
         </div>
-
-        <div className="chart-block">
+        <div className="skills-group">
           <h3>Frameworks</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <RadarChart outerRadius={90} data={frameworkData}>
-              <PolarGrid />
-              <PolarAngleAxis dataKey="subject" />
-              <Radar name="Frameworks" dataKey="A" stroke="#F00000" fill="#F00000" fillOpacity={0.6} />
-            </RadarChart>
-          </ResponsiveContainer>
+          <ul className="skills-tags">
+            <li>Symfony</li>
+            <li>Laravel</li>
+            <li>React</li>
+            <li>Django</li>
+            <li>Unity</li>
+          </ul>
         </div>
-
-        <div className="chart-block">
-          <h3>DevOps & Tools</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <RadarChart outerRadius={90} data={devopsData}>
-              <PolarGrid />
-              <PolarAngleAxis dataKey="subject" />
-              <Radar name="DevOps & Tools" dataKey="A" stroke="#F00000" fill="#F00000" fillOpacity={0.6} />
-            </RadarChart>
-          </ResponsiveContainer>
+        <div className="skills-group">
+          <h3>DevOps &amp; Tools</h3>
+          <ul className="skills-tags">
+            <li>Git (GitHub, GitLab)</li>
+            <li>Docker</li>
+            <li>Linux</li>
+            <li>Redis</li>
+            <li>RabbitMQ</li>
+            <li>Jenkins</li>
+          </ul>
         </div>
       </div>
       <div className="currently-learning">
-        <span role="img" aria-label="rocket">📖</span>
+        <span role="img" aria-label="book">📖</span>
         <span className="currently-learning-text">
           Currently learning: <strong>React and Django</strong>
         </span>
