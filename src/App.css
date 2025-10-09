@@ -144,10 +144,6 @@ body {
   width: 100vw;
 }
 
-/* Make main content grow to fill space */
-.app > *:not(footer) {
-  flex: 1 0 auto;
-}
 
 /* Footer stays at the bottom and stretches full width */
 footer {
