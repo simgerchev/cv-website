@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const projects = [
   {
     img: projectFirst,
-    title: "Babel's Room",
+    title: "Babel's Room(🔨WIP🔨)",
     desc: "A chat application where you can temporary chat sessions with an end to end encryption.",
     tech: ["React Vite", "Django", "Docker", "Git"],
     link: "https://github.com/simgerchev/chat-app",
@@ -41,7 +41,7 @@ const projects = [
   },
   {
     img: projectFifth,
-    title: "CyberMonk",
+    title: "CyberMonk(🔨WIP🔨)",
     desc: "CyberMonk is a web-based terminal emulator game about a monk exploring a fantasy world through command-line commands. Similar to Terminus.",
     tech: ["JavaScript", "React", "CSS"],
     link: "/cyber-monk",
@@ -49,7 +49,7 @@ const projects = [
   },
     {
     img: projectSixth,
-    title: "Podvigh",
+    title: "Podvigh(🔨WIP🔨)",
     desc: "Podvigh is a web-based ASCII game about a monk exploring a fantasy world through command-line commands.",
     tech: ["JavaScript", "React", "CSS"],
     link: "/podvigh",
