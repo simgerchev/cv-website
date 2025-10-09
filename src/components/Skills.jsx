@@ -40,6 +40,8 @@ export default function Skills() {
             <li>Python</li>
             <li>C#</li>
             <li>Go</li>
+            <li>MySQL</li>
+            <li>MariaDB</li>
           </ul>
         </div>
         <div className="skills-group">
@@ -50,6 +52,8 @@ export default function Skills() {
             <li>React</li>
             <li>Django</li>
             <li>Unity</li>
+            <li>Bootstrap</li>
+            <li>Wordpress</li>
           </ul>
         </div>
         <div className="skills-group">
@@ -57,17 +61,25 @@ export default function Skills() {
           <ul className="skills-tags">
             <li>Git (GitHub, GitLab)</li>
             <li>Docker</li>
-            <li>Linux</li>
+            <li>Bash</li>
             <li>Redis</li>
             <li>RabbitMQ</li>
             <li>Jenkins</li>
+          </ul>
+        </div>
+        <div className="skills-group">
+          <h3>Operating &amp; Systems</h3>
+          <ul className="skills-tags">
+            <li>Linux (Kali Linux, Debian)</li>
+            <li>MacOS</li>
+            <li>Windows</li>
           </ul>
         </div>
       </div>
       <div className="currently-learning">
         <span role="img" aria-label="book">📖</span>
         <span className="currently-learning-text">
-          Currently learning: <strong>React and Django</strong>
+          Currently learning: <strong>React</strong>
         </span>
       </div>
     </section>
