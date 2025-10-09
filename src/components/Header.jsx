@@ -8,10 +8,8 @@ export default function Header() {
         <img src={WhiteLogo} alt="Logo" className="logo-img" />
         <nav>
           <Link to="/" className="nav-link">HOME</Link>
-          <a href="/#skills" className="nav-link">SKILLS</a>
-          <a href="/#projects" className="nav-link">PROJECTS</a>
-          <Link to="/browser-terminal" className="nav-link">BROWSER TERMINAL</Link>
-          <Link to="/cyber-monk" className="nav-link">CYBER MONK</Link>
+          <Link to="/skills" className="nav-link">SKILLS</Link>
+          <Link to="/projects" className="nav-link">WORKSHOP</Link>
         </nav>
       </div>
     </header>

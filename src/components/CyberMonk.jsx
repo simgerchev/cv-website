@@ -1,5 +1,3 @@
-
-
 import React, { useState, useRef, useEffect } from "react";
 import monkAvatar from '../assets/project-pictures/cyber-monk/monk-avatar.png';
 import gameForest from '../assets/project-pictures/cyber-monk/forest-game.png';
@@ -76,9 +74,10 @@ const LOCATIONS = {
 };
 
 const INITIAL_STATE = {
-	location: "forest",
-	history: [],
-	unlocked: []
+    location: "forest",
+    history: [],
+    unlocked: [],
+    visited: ["forest"] // Mark the starting location as visited
 };
 
 function getPrompt(state) {
@@ -103,7 +102,7 @@ export default function CyberMonk() {
 							"You hold a book containing all the movements and actions you know.",
 							"Open your book with the 'help' command to see your options.",
 							LOCATIONS[savedState?.location || INITIAL_STATE.location].description,
-							"Type 'ls' to see available paths, 'cd forest_deep' to enter the forest, 'cd ..' to go back, or 'help' to open your book."
+							"Type 'ls' to see available paths, 'cd forest_deeper' to enter the forest, 'cd ..' to go back, or 'help' to open your book."
 						]);
 						const [input, setInput] = useState("");
 						const [state, setState] = useState(savedState || INITIAL_STATE);
@@ -189,7 +188,13 @@ export default function CyberMonk() {
 									if (parent) {
 										newState.history = [...(state.history || []), state.location];
 										newState.location = parent;
-										output = LOCATIONS[newState.location].description;
+										// Only show description if not visited
+										if (!newState.visited?.includes(parent)) {
+											output = LOCATIONS[parent].description;
+											newState.visited = [...(newState.visited || []), parent];
+										} else {
+											output = `You move to ${parent}.`;
+										}
 										// Unlock command if present, but skip 'cat' (only unlock via bash crystal-lens.sh)
 										if (LOCATIONS[newState.location].unlocks && LOCATIONS[newState.location].unlocks !== 'cat' && !state.unlocked.includes(LOCATIONS[newState.location].unlocks)) {
 											newState.unlocked = [...state.unlocked, LOCATIONS[newState.location].unlocks];
@@ -203,9 +208,15 @@ export default function CyberMonk() {
 									if (exitsObj && exitsObj[dir]) {
 										newState.history = [...(state.history || []), state.location];
 										newState.location = exitsObj[dir];
-										output = LOCATIONS[newState.location].description;
+										// Only show description if not visited
+										if (!newState.visited?.includes(exitsObj[dir])) {
+											output = LOCATIONS[exitsObj[dir]].description;
+											newState.visited = [...(newState.visited || []), exitsObj[dir]];
+										} else {
+											output = `You move to ${exitsObj[dir]}.`;
+										}
 										// Show voice message if entering crystal_cavern
-										if (exitsObj[dir] === "crystal_cavern") {
+										if (exitsObj[dir] === "crystal_cavern" && !newState.visited?.includes(exitsObj[dir])) {
 											output += "\n\nA mysterious voice echoes in the cavern: 'If you wish to interact with items or NPCs, type bash item_name.sh or bash npc_name.sh.'";
 										}
 										// Unlock command if present, but skip 'cat' (only unlock via bash crystal-lens.sh)

@@ -3,6 +3,7 @@ import projectSecond from '../assets/project-pictures/project-second.jpg';
 import projectThird from '../assets/project-pictures/project-third.png';
 import projectFourth from '../assets/project-pictures/project-fourth.png';
 import projectFifth from '../assets/project-pictures/project-fifth.png';
+import projectSixth from '../assets/project-pictures/project-sixth.png';
 import { Link } from 'react-router-dom';
 
 const projects = [
@@ -32,19 +33,27 @@ const projects = [
   },
   {
     img: projectFourth,
-    title: "Browser Terminal[In the Link Above]",
+    title: "Browser Terminal",
     desc: "A web-based terminal emulator that runs in the browser, allowing users to interact with a simulated command line interface. Similar to the Overthewire Wargames.",
     tech: ["JavaScript", "React", "CSS"],
     link: "/browser-terminal",
-    showButton: false // Set to false to hide button for this project
+    showButton: true
   },
   {
     img: projectFifth,
-    title: "CyberMonk[In the Link Above]",
+    title: "CyberMonk",
     desc: "CyberMonk is a web-based terminal emulator game about a monk exploring a fantasy world through command-line commands. Similar to Terminus.",
     tech: ["JavaScript", "React", "CSS"],
     link: "/cyber-monk",
-    showButton: false // Set to false to hide button for this project
+    showButton: true
+  },
+    {
+    img: projectSixth,
+    title: "Podvigh",
+    desc: "Podvigh is a web-based ASCII game about a monk exploring a fantasy world through command-line commands.",
+    tech: ["JavaScript", "React", "CSS"],
+    link: "/podvigh",
+    showButton: true
   }
 ];
 
