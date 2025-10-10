@@ -6,8 +6,8 @@ import forestInteractions from '../data/podvigh/interactions/forest.json';
 import ruinsInteractions from '../data/podvigh/interactions/ruins.json';
 
 // --- CONFIG ---
-const MAP_WIDTH = 40;
-const MAP_HEIGHT = 20;
+const MAP_WIDTH = 30;
+const MAP_HEIGHT = 15;
 const ZONES = zoneObjects;
 const SANCTUARY_REQUIREMENTS = { faith: 14 };
 const SANCTUARY_RADIUS = 3;
