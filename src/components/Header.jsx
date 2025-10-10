@@ -9,7 +9,7 @@ export default function Header() {
         <nav>
           <Link to="/" className="nav-link">HOME</Link>
           <Link to="/skills" className="nav-link">SKILLS</Link>
-          <Link to="/projects" className="nav-link">WORKSHOP</Link>
+          <Link to="/projects" className="nav-link">WORKSHOP⚙︎</Link>
         </nav>
       </div>
     </header>

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Forest",
+    "tiles": ["#", ".", "#", ".", "#", "."],
+    "color": "#228B22",
+    "reflections": [
+      "The trees seem to breathe with you.",
+      "The forest hums in green silence."
+    ]
+  },
+  {
+    "name": "Ruins",
+    "tiles": ["+", ".", "†", ".", "+", "."],
+    "color": "#A9A9A9",
+    "reflections": [
+      "Once this place sang hymns.",
+      "Only the wind prays here now."
+    ]
+  }
+]
