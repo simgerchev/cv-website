@@ -6,18 +6,22 @@ import forestInteractions from '../data/podvigh/interactions/forest.json';
 import ruinsInteractions from '../data/podvigh/interactions/ruins.json';
 
 // --- CONFIG ---
-const MAP_WIDTH = 30;
-const MAP_HEIGHT = 15;
+const MAP_WIDTH = 50;
+const MAP_HEIGHT = 25;
 const ZONES = zoneObjects;
+const ZONE_DURATION_MS = 20000; // how long a zone stays before being replaced (20s)
+// (no additional visual features)
 const SANCTUARY_REQUIREMENTS = { faith: 14 };
 const SANCTUARY_RADIUS = 3;
+// Encounter probability configuration (reduced further to avoid constant encounters)
+const SPECIAL_CHANCE = 0.01; // ~1% per tile chance to be a special
+const NPC_CHANCE = 0.01; // ~1% per tile chance to be an npc
+const EVENT_CHANCE = 0.03; // 3% chance for random event on move
+const REFLECTION_CHANCE = 0.09; // 9% chance for reflection message
 
 // --- UTILS ---
 function randomZone() {
     return ZONES[Math.floor(Math.random() * ZONES.length)];
-}
-function randomTile(zone) {
-    return zone.tiles[Math.floor(Math.random() * zone.tiles.length)];
 }
 function randomReflection(zone) {
     return zone.reflections[Math.floor(Math.random() * zone.reflections.length)];
@@ -35,42 +39,36 @@ function randomNPC(zoneName) {
     return allowed[Math.floor(Math.random() * allowed.length)];
 }
 
-// --- FEATURE GENERATION HELPERS ---
-function randomWalk(start, length, width, height, char) {
-    // Returns array of {x, y} for the feature
-    let points = [];
-    let [x, y] = start;
-    for (let i = 0; i < length; i++) {
-        points.push({ x, y });
-        // Randomly move in one direction, but mostly forward
-        const dir = Math.random();
-        if (dir < 0.4) x += (Math.random() < 0.5 ? 1 : -1); // horizontal
-        else if (dir < 0.8) y += (Math.random() < 0.5 ? 1 : -1); // vertical
-        else {
-            x += (Math.random() < 0.5 ? 1 : -1);
-            y += (Math.random() < 0.5 ? 1 : -1);
-        }
-        // Clamp to zone bounds
-        x = Math.max(0, Math.min(width - 1, x));
-        y = Math.max(0, Math.min(height - 1, y));
-    }
-    return points;
-}
 
 function generateZoneFeatures(zone) {
-    // Generate only a river for this zone, using '~' as the river symbol
-    const riverStart = [
-        Math.floor(Math.random() * MAP_WIDTH),
-        Math.floor(Math.random() * MAP_HEIGHT),
-    ];
-    const river = randomWalk(riverStart, Math.floor(MAP_HEIGHT * 1.2), MAP_WIDTH, MAP_HEIGHT, "~");
-    return { ...zone, river };
+    // Generate additional features for a zone (none currently).
+    // We'll create a deterministic PRNG per zone using a simple LCG so the same
+    // zone name yields the same features until the zone is replaced.
+    function lcg(seed) {
+        let s = seed >>> 0;
+        return function() {
+            s = (1664525 * s + 1013904223) >>> 0;
+            return s / 0x100000000;
+        };
+    }
+
+    // derive seed from zone.name (fall back to random if unavailable)
+    const name = zone.name || JSON.stringify(zone);
+    let seed = 0;
+    for (let i = 0; i < name.length; i++) seed = (seed * 31 + name.charCodeAt(i)) >>> 0;
+
+    const width = MAP_WIDTH;
+    const height = MAP_HEIGHT;
+
+    // No additional features for now
+    return { ...zone };
 }
 
 // --- COMPONENT ---
 const podvigh = () => {
     // World state
-    const [player, setPlayer] = useState({ x: 0, y: 0 });
+    // start player centered in the zone
+    const [player, setPlayer] = useState({ x: Math.floor(MAP_WIDTH/2), y: Math.floor(MAP_HEIGHT/2) });
     const [zones, setZones] = useState([
         { zone: generateZoneFeatures(randomZone()), origin: { x: 0, y: 0 } },
     ]);
@@ -78,6 +76,10 @@ const podvigh = () => {
         "You begin your walk in silence.",
     ]);
     const steps = useRef(0);
+    // visited tiles trail: keys are "x,y" -> true
+    const [visited, setVisited] = useState({
+        [`${Math.floor(MAP_WIDTH/2)},${Math.floor(MAP_HEIGHT/2)}`]: true
+    });
 
     // Game state
     const [state, setState] = useState({
@@ -127,15 +129,71 @@ const podvigh = () => {
         return { zone: zones[0].zone, origin: zones[0].origin };
     }
 
+    // Deterministic helpers for mapping coordinates to stable pseudo-random values
+    function deterministicFraction(x, y, zoneName) {
+        const s = Math.abs(x * 73856093 ^ y * 19349663 ^ (zoneName ? zoneName.length : 42));
+        let v = s >>> 0;
+        v = (1664525 * v + 1013904223) >>> 0;
+        return v / 0x100000000;
+    }
+
+    function deterministicIndex(listLength, x, y, zoneName) {
+        const h = Math.abs(x * 73856093 ^ y * 19349663 ^ (zoneName ? zoneName.length : 42));
+        return h % listLength;
+    }
+
+    function getAreaCoordsForPlace(ox, oy, size) {
+        const coords = [];
+        const w = (size && size.w) || 1;
+        const h = (size && size.h) || 1;
+        for (let yy = oy; yy < oy + h; yy++) {
+            for (let xx = ox; xx < ox + w; xx++) {
+                coords.push(`${xx},${yy}`);
+            }
+        }
+        return coords;
+    }
+
+    // Check whether a given tile belongs to a deterministically-placed 'place' object.
+    // If it does, return { place, originX, originY } else null.
+    function findPlaceAtTile(x, y) {
+        const { zone, origin } = getZoneAt(x, y);
+        const objects = INTERACTION_OBJECTS_BY_ZONE[zone.name] || [];
+        const placeCandidates = objects.filter(o => o.type === 'place' && (!o.allowedZones || o.allowedZones.includes(zone.name)));
+        if (placeCandidates.length === 0) return null;
+
+        // allowedSpecials includes both single-tile specials and place type so deterministic index matches selection logic
+        const allowedSpecials = objects.filter(o => (o.type === 'special' || o.type === 'place'));
+        if (allowedSpecials.length === 0) return null;
+
+        for (const place of placeCandidates) {
+            const w = (place.size && place.size.w) || 1;
+            const h = (place.size && place.size.h) || 1;
+            // origin candidate ranges so that (x,y) falls inside ox..ox+w-1, oy..oy+h-1
+            for (let ox = x - (w - 1); ox <= x; ox++) {
+                for (let oy = y - (h - 1); oy <= y; oy++) {
+                    // ensure origin sits within the zone bounds
+                    if (ox < origin.x || oy < origin.y) continue;
+                    if (ox + w > origin.x + MAP_WIDTH || oy + h > origin.y + MAP_HEIGHT) continue;
+                    const frac = deterministicFraction(ox, oy, zone.name);
+                    if (frac < SPECIAL_CHANCE) {
+                        // deterministic selection among allowed specials/places
+                        const idx = deterministicIndex(allowedSpecials.length, ox, oy, zone.name);
+                        const selected = allowedSpecials[idx];
+                        if (selected && selected.name === place.name && selected.type === 'place') {
+                            return { place: selected, originX: ox, originY: oy };
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     function getTile(x, y) {
         const { zone, origin } = getZoneAt(x, y);
 
-        // --- RIVER OVERRIDE ---
-        const zx = x - origin.x;
-        const zy = y - origin.y;
-        if (zone.river && zone.river.some(p => p.x === zx && p.y === zy)) {
-            return { char: "~", color: "#1E90FF", zone, description: "A flowing river." };
-        }
+        // fall through to special/some tile selection
 
         if (
             sanctuarySpawned &&
@@ -169,15 +227,42 @@ const podvigh = () => {
             const idx = Math.abs(x * 73856093 ^ y * 19349663 ^ zone.name.length) % zone.tiles.length;
             return { char: zone.tiles[idx], color: zone.color, zone };
         }
-        const seed = Math.abs(x * 73856093 ^ y * 19349663 ^ 42);
-        if (seed % 23 === 0) {
+
+        // Multi-tile 'place' handling: check if this tile belongs to a placed 'place' object
+        const placeInfo = findPlaceAtTile(x, y);
+        if (placeInfo) {
+            const { place, originX, originY } = placeInfo;
+            // if this tile was consumed, show base tile instead
+            if (usedSpecials.includes(`${x},${y}`)) {
+                const idx = Math.abs(x * 73856093 ^ y * 19349663 ^ zone.name.length) % zone.tiles.length;
+                return { char: zone.tiles[idx], color: zone.color, zone };
+            }
+            return {
+                char: place.char || '~',
+                color: place.color || zone.color,
+                zone,
+                special: place,
+                placeOriginX: originX,
+                placeOriginY: originY,
+                placeSize: place.size || { w: 1, h: 1 },
+                description: place.description,
+            };
+        }
+        // Deterministic per-tile random based on coordinates to keep features stable
+        const tileRand = (() => {
+            const s = Math.abs(x * 73856093 ^ y * 19349663 ^ (zone.name ? zone.name.length : 42));
+            let v = s >>> 0;
+            // simple LCG step to get a fraction
+            v = (1664525 * v + 1013904223) >>> 0;
+            return v / 0x100000000;
+        })();
+        if (tileRand < SPECIAL_CHANCE) {
             const special = randomSpecial(zone.name);
             if (special) {
                 return { char: special.char, color: special.color, zone, special, description: special.description, x, y };
             }
         }
-        const npcSeed = Math.abs(x * 19349663 ^ y * 83492791 ^ 99);
-        if (npcSeed % 41 === 0 && !usedSpecials.includes(`${x},${y}`)) {
+        if (tileRand >= SPECIAL_CHANCE && tileRand < SPECIAL_CHANCE + NPC_CHANCE && !usedSpecials.includes(`${x},${y}`)) {
             const npc = randomNPC(zone.name);
             if (npc) {
                 return { char: npc.char, color: npc.color, zone, npc, description: npc.description, x, y };
@@ -187,41 +272,28 @@ const podvigh = () => {
         return { char: zone.tiles[idx], color: zone.color, zone };
     }
 
+    // Instead of generating and keeping many zones, keep only a single active zone
+    // and rotate it periodically to a new randomly generated zone.
     useEffect(() => {
-        const { x, y } = player;
-        const currentZone = getZoneAt(x, y);
-        let newZones = [...zones];
-        let added = false;
-        if (x - currentZone.origin.x <= 1) {
-            newZones.push({
-                zone: generateZoneFeatures(randomZone()),
-                origin: { x: currentZone.origin.x - MAP_WIDTH, y: currentZone.origin.y },
-            });
-            added = true;
-        }
-        if (x - currentZone.origin.x >= MAP_WIDTH - 2) {
-            newZones.push({
-                zone: generateZoneFeatures(randomZone()),
-                origin: { x: currentZone.origin.x + MAP_WIDTH, y: currentZone.origin.y },
-            });
-            added = true;
-        }
-        if (y - currentZone.origin.y <= 1) {
-            newZones.push({
-                zone: generateZoneFeatures(randomZone()),
-                origin: { x: currentZone.origin.x, y: currentZone.origin.y - MAP_HEIGHT },
-            });
-            added = true;
-        }
-        if (y - currentZone.origin.y >= MAP_HEIGHT - 2) {
-            newZones.push({
-                zone: generateZoneFeatures(randomZone()),
-                origin: { x: currentZone.origin.x, y: currentZone.origin.y + MAP_HEIGHT },
-            });
-            added = true;
-        }
-        if (added) setZones(newZones);
-    }, [player]);
+        const timer = setInterval(() => {
+                const zobj = randomZone();
+                const newZone = { zone: generateZoneFeatures(zobj), origin: { x: 0, y: 0 } };
+                setZones([newZone]);
+            // recenter the player into the middle of the new zone so features like rivers are visible
+            setPlayer({ x: Math.floor(MAP_WIDTH/2), y: Math.floor(MAP_HEIGHT/2) });
+            // clear visited tiles and used specials so the new zone is fresh
+            const centerKey = `${Math.floor(MAP_WIDTH/2)},${Math.floor(MAP_HEIGHT/2)}`;
+            setVisited({ [centerKey]: true });
+            setUsedSpecials([]);
+                setMessages(msgs => [...msgs.slice(-4), `A new zone appears: ${newZone.zone.name}`]);
+            // reset sanctuary spawn for the new zone
+            setSanctuarySpawned(false);
+            setSanctuaryPos(null);
+        }, ZONE_DURATION_MS);
+        return () => clearInterval(timer);
+    }, []);
+
+    // (no dynamic feature regeneration)
 
     useEffect(() => {
         function handleKey(e) {
@@ -256,7 +328,7 @@ const podvigh = () => {
                 // Only process if correct key is pressed
                 if (
                     (pendingAction.type === "special" && (e.key === "g" || e.key === "G")) ||
-                    (pendingAction.type === "npc" && (e.key === "t" || e.key === "T"))
+                    (pendingAction.type === "npc" && (e.key === "g" || e.key === "G"))
                 ) {
                     if (pendingAction.data.choices && pendingAction.data.choices.length > 0) {
                         const choicesMsg = [
@@ -291,7 +363,13 @@ const podvigh = () => {
                                     pendingAction.data.message
                                 ]);
                             }
-                            setUsedSpecials(prev => [...prev, `${pendingAction.x},${pendingAction.y}`]);
+                            // If this special is part of a multi-tile place, mark the entire area used
+                            if (pendingAction.placeOriginX !== undefined && pendingAction.placeOriginY !== undefined && pendingAction.placeSize) {
+                                const area = getAreaCoordsForPlace(pendingAction.placeOriginX, pendingAction.placeOriginY, pendingAction.placeSize);
+                                setUsedSpecials(prev => Array.from(new Set([...prev, ...area])));
+                            } else {
+                                setUsedSpecials(prev => [...prev, `${pendingAction.x},${pendingAction.y}`]);
+                            }
                         }
                     } else if (pendingAction.type === "npc") {
                         const line = pendingAction.data.dialogue[Math.floor(Math.random() * pendingAction.data.dialogue.length)];
@@ -299,14 +377,30 @@ const podvigh = () => {
                             ...msgs.slice(-4),
                             `${pendingAction.data.name}: "${line}"`,
                         ]);
-                        pendingAction.data.effect(state, setState, setMessages);
-                        setUsedSpecials(prev => [...prev, `${pendingAction.x},${pendingAction.y}`]);
+                        if (typeof pendingAction.data.effect === 'function') {
+                            pendingAction.data.effect(state, setState, setMessages);
+                        } else {
+                            applyEffect(pendingAction.data.effect, state, setState, setMessages);
+                        }
+                        if (pendingAction.placeOriginX !== undefined && pendingAction.placeOriginY !== undefined && pendingAction.placeSize) {
+                            const area = getAreaCoordsForPlace(pendingAction.placeOriginX, pendingAction.placeOriginY, pendingAction.placeSize);
+                            setUsedSpecials(prev => Array.from(new Set([...prev, ...area])));
+                        } else {
+                            setUsedSpecials(prev => [...prev, `${pendingAction.x},${pendingAction.y}`]);
+                        }
                     }
                     setPendingAction(null);
                     return;
-                } else {
-                    // Any other key cancels the pending action and allows movement
+                } else if (
+                    (pendingAction.type === "special" && (e.key === "e" || e.key === "E")) ||
+                    (pendingAction.type === "npc" && (e.key === "e" || e.key === "E"))
+                ) {
+                    // Pressing E cancels the pending interaction; after that movement is allowed
                     setPendingAction(null);
+                    setMessages(msgs => [...msgs.slice(-4), "You step away."]);
+                    return;
+                } else {
+                    // Block all other input (including movement) until user presses G to interact or E to cancel
                     return;
                 }
             }
@@ -319,13 +413,17 @@ const podvigh = () => {
             if (dx !== 0 || dy !== 0) {
                 const newX = player.x + dx;
                 const newY = player.y + dy;
+                // record the tile we're stepping off of so it becomes 'visited'
+                const prevKey = `${player.x},${player.y}`;
+                setVisited(prev => ({ ...prev, [prevKey]: true }));
                 setPlayer({ x: newX, y: newY });
                 steps.current += 1;
+                // (river regeneration removed)
                 const tile = getTile(newX, newY);
                 if (tile.special) {
                     setMessages(msgs => [
                         ...msgs.slice(-4),
-                        `You see a ${tile.special.name.toLowerCase()}.\n${tile.special.description || ""}\nPress G to interact, any other key to ignore.`
+                        `You see a ${tile.special.name.toLowerCase()}.\n${tile.special.description || ""}\nPress G to interact, E to ignore.`
                     ]);
                     setPendingAction({
                         type: "special",
@@ -337,7 +435,7 @@ const podvigh = () => {
                 } else if (tile.npc) {
                     setMessages(msgs => [
                         ...msgs.slice(-4),
-                        `You meet ${tile.npc.name}.\n${tile.npc.description || ""}\nPress T to talk, any other key to ignore.`
+                        `You meet ${tile.npc.name}.\n${tile.npc.description || ""}\nPress G to interact, E to ignore.`
                     ]);
                     setPendingAction({
                         type: "npc",
@@ -353,14 +451,14 @@ const podvigh = () => {
                     const zoneEvents = randomEvents.filter(ev =>
                         !ev.allowedZones || ev.allowedZones.includes(zone.name)
                     );
-                    if (zoneEvents.length > 0 && Math.random() < 0.10) {
+                    if (zoneEvents.length > 0 && Math.random() < EVENT_CHANCE) {
                         const event = zoneEvents[Math.floor(Math.random() * zoneEvents.length)];
                         setMessages(msgs => [...msgs.slice(-4), event.msg]);
                         applyEffect(event.effect, state, setState, setMessages);
                     }
                 }
                 // Occasionally show reflection
-                if (Math.random() < 0.18) {
+                if (Math.random() < REFLECTION_CHANCE) {
                     const { zone } = getZoneAt(newX, newY);
                     setMessages((msgs) => [
                         ...msgs.slice(-4),
@@ -393,9 +491,26 @@ const podvigh = () => {
 
     // Render map
     const mapRows = [];
-    for (let y = player.y - Math.floor(MAP_HEIGHT / 2); y <= player.y + Math.floor(MAP_HEIGHT / 2); y++) {
+    // Compute visible bounds
+    const minY = player.y - Math.floor(MAP_HEIGHT / 2);
+    const maxY = player.y + Math.floor(MAP_HEIGHT / 2);
+    const minX = player.x - Math.floor(MAP_WIDTH / 2);
+    const maxX = player.x + Math.floor(MAP_WIDTH / 2);
+
+    for (let y = minY; y <= maxY; y++) {
         let row = [];
-        for (let x = player.x - Math.floor(MAP_WIDTH / 2); x <= player.x + Math.floor(MAP_WIDTH / 2); x++) {
+        for (let x = minX; x <= maxX; x++) {
+            // border if on outermost row/column
+            const isBorder = (y === minY || y === maxY || x === minX || x === maxX);
+            if (isBorder) {
+                row.push(
+                    <span key={x} style={{ color: '#F20505', fontWeight: 'bold' }}>
+                        #
+                    </span>
+                );
+                continue;
+            }
+
             if (x === player.x && y === player.y) {
                 row.push(
                     <span key={x} style={{ color: "#fff", fontWeight: "bold" }}>
@@ -404,10 +519,12 @@ const podvigh = () => {
                 );
             } else {
                 const tile = getTile(x, y);
+                const key = `${x},${y}`;
+                const isVisited = !!visited[key];
                 row.push(
                     <span
                         key={x}
-                        style={{ color: tile.color }}
+                        style={{ color: isVisited ? '#000000' : tile.color }}
                     >
                         {tile.char}
                     </span>
@@ -423,13 +540,15 @@ const podvigh = () => {
 
     // Restart game
     const restartGame = () => {
-        setPlayer({ x: 0, y: 0 });
+        setPlayer({ x: Math.floor(MAP_WIDTH/2), y: Math.floor(MAP_HEIGHT/2) });
         setZones([{ zone: generateZoneFeatures(randomZone()), origin: { x: 0, y: 0 } }]);
         setMessages(["You begin your walk in silence."]);
         setState({
             faith: 5,
             health: 8,
         });
+        // reset visited trail
+        setVisited({ [`${Math.floor(MAP_WIDTH/2)},${Math.floor(MAP_HEIGHT/2)}`]: true });
         setGameOver(false);
         setEnding("");
         steps.current = 0;
@@ -474,27 +593,42 @@ const podvigh = () => {
                     Faith: {state.faith} &nbsp; Health: {state.health}
                 </div>
                 <div className="podvigh-messages">
-                    {messages.slice(-3).map((msg, i) => (
-                        <div key={i} className="podvigh-message-line">
-                            {msg}
-                        </div>
-                    ))}
+                    {messages.slice(-3).map((msg, i) => {
+                        // Split on newlines so prompt lines like 'Press G' can be styled differently
+                        const parts = String(msg).split('\n');
+                        return (
+                            <div key={i} className="podvigh-message-line">
+                                {parts.map((part, j) => {
+                                    const trimmed = part.trim();
+                                    const isPrompt = /(^\(?Press\b)|(^\(Press)/i.test(trimmed);
+                                    // Render prompt/choice lines in red
+                                    return (
+                                        <div key={j} style={{ color: isPrompt ? '#F20505' : undefined }}>
+                                            {part}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        );
+                    })}
                     {gameOver && ending && (
                         <div className="podvigh-message-line" style={{ color: "#F20505", marginTop: "1em", fontWeight: "bold" }}>
                             {ending}
                         </div>
                     )}
                 </div>
+                <div className="podvigh-controls">+--------------------------------------+</div>
                 <div className="podvigh-controls">
                     Goal: Find the Sanctuary by growing your Faith. Explore, pray, and survive!
                 </div>
                 <div className="podvigh-controls">
-                    Controls: Move (<b>WASD</b> / <b>Arrow keys</b>) | Pray (<b>P</b>) | Interact (<b>G</b>/<b>T</b>)
+                    Controls: Move (<b>WASD</b> / <b>Arrow keys</b>) | Pray (<b>P</b>) | Interact (<b>G</b>)
                 </div>
                 {gameOver && (
                     <div className="podvigh-ending">
                     </div>
                 )}
+                <div className="podvigh-controls">+--------------------------------------+</div>
             </div>
         </div>
     );

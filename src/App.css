@@ -946,13 +946,8 @@ footer .social a {
 }
 
 .podvigh-stats {
-  font-weight: bold;
-  font-size: 1.15em;
-  letter-spacing: 0.03em;
   color: var(--terminal-prompt);
-  margin-bottom: 0.5em;
-  text-shadow: 0 0 6px var(--terminal-prompt-glow);
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-family: 'Fira Mono', monospace;
 }
 
 .podvigh-inventory {
@@ -964,8 +959,6 @@ footer .social a {
 }
 
 .podvigh-messages {
-  background: var(--terminal-scrollbar-bg);
-  padding: 0.75em 1em;
   min-height: 3em;
   max-width: 100%;
   font-size: 1em;
@@ -987,7 +980,6 @@ footer .social a {
   font-size: 1em;
   opacity: 0.8;
   color: var(--terminal-prompt);
-  margin-bottom: 1em;
   font-weight: 500;
   font-family: 'Fira Mono', monospace;
 }
@@ -1046,7 +1038,6 @@ footer .social a {
 }
 
 .podvigh-title,
-.podvigh-stats,
 .podvigh-ending,
 .podvigh-restart-btn {
   font-family: 'Oswald', Arial, Helvetica, sans-serif;

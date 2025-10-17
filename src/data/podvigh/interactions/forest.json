@@ -254,4 +254,46 @@
       }
     ]
   }
+  ,
+  {
+    "type": "place",
+    "char": "≈",
+    "name": "Lake",
+    "color": "#1E90FF",
+    "description": "A shallow lake that stretches across several paces.",
+    "message": "You cool off by the lake.",
+    "allowedZones": ["Forest"],
+    "size": { "w": 5, "h": 2 }
+  }
+  ,
+  {
+    "type": "place",
+    "char": "~",
+    "name": "Pond",
+    "color": "#5DADE2",
+    "description": "A small, peaceful pond with clear water.",
+    "message": "You wash your hands in the pond.",
+    "allowedZones": ["Forest"],
+    "size": { "w": 2, "h": 1 }
+  },
+  {
+    "type": "place",
+    "char": "o",
+    "name": "Stone Circle",
+    "color": "#8B7D7B",
+    "description": "A circle of standing stones, arranged in an old ritual pattern.",
+    "message": "You feel the weight of ancient rites.",
+    "allowedZones": ["Forest"],
+    "size": { "w": 3, "h": 2 }
+  },
+  {
+    "type": "place",
+    "char": "=",
+    "name": "Grove Clearing",
+    "color": "#7FFF00",
+    "description": "A broad clearing where light pours through the canopy.",
+    "message": "You feel the warmth of the clearing.",
+    "allowedZones": ["Forest"],
+    "size": { "w": 4, "h": 2 }
+  }
 ]

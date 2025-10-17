@@ -224,4 +224,64 @@
       }
     ]
   }
+  ,
+  {
+    "type": "place",
+    "char": "▓",
+    "name": "Flooded Courtyard",
+    "color": "#2F4F4F",
+    "description": "A courtyard partially submerged; waterlogged stones form pools.",
+    "effect": "stamina-1",
+    "message": "The wet stones sap your energy. Stamina -1.",
+    "allowedZones": ["Ruins"],
+    "size": { "w": 4, "h": 2 },
+    "choices": [
+      {
+        "label": "Wade carefully",
+        "effect": "stamina-1",
+        "message": "You pick your steps carefully; it tires you. Stamina -1."
+      },
+      {
+        "label": "Search the edges",
+        "effect": "treasure+1",
+        "message": "You find something glinting at the edge."
+      }
+    ]
+  }
+  ,
+  {
+    "type": "place",
+    "char": "≋",
+    "name": "Sunken Library",
+    "color": "#4B0082",
+    "description": "Shelves collapsed into shallow pools; water laps at faded pages.",
+    "message": "You recover a damp but legible page.",
+    "allowedZones": ["Ruins"],
+    "size": { "w": 3, "h": 3 }
+  },
+  {
+    "type": "place",
+    "char": "~",
+    "name": "Mossy Plaza",
+    "color": "#556B2F",
+    "description": "A broad plaza where moss fills the gaps between paving stones.",
+    "message": "The soft moss cushions your steps.",
+    "allowedZones": ["Ruins"],
+    "size": { "w": 4, "h": 2 }
+  },
+  {
+    "type": "place",
+    "char": "o",
+    "name": "Submerged Well",
+    "color": "#1E90FF",
+    "description": "A well overflowing, its steps submerged and slick.",
+    "effect": "stamina-1",
+    "message": "The cold damp drains your energy. Stamina -1.",
+    "allowedZones": ["Ruins"],
+    "size": { "w": 2, "h": 2 },
+    "choices": [
+      { "label": "Peer into the well", "effect": "", "message": "The water ripples but reveals nothing." },
+      { "label": "Lower a rope", "effect": "treasure+1", "message": "You fish something metallic from the depths." }
+    ]
+  }
 ]
