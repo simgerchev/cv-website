@@ -4,6 +4,7 @@ import zoneObjects from '../data/podvigh/zoneObjects.json';
 import randomEvents from '../data/podvigh/randomEvents.json';
 import forestInteractions from '../data/podvigh/interactions/forest.json';
 import ruinsInteractions from '../data/podvigh/interactions/ruins.json';
+import desertInteractions from '../data/podvigh/interactions/desert.json';
 
 // --- CONFIG ---
 const MAP_WIDTH = 50;
@@ -476,18 +477,10 @@ const podvigh = () => {
                     setGameOver(true);
                 }
             }
-            // Pray
-            if (e.key === "p" || e.key === "P") {
-                setMessages(msgs => [
-                    ...msgs.slice(-4),
-                    "You pause and pray. Silence deepens.",
-                ]);
-                setState(s => ({ ...s, faith: s.faith + 1 }));
-            }
-        }
-        window.addEventListener("keydown", handleKey);
-        return () => window.removeEventListener("keydown", handleKey);
-    }, [player, zones, state, gameOver, pendingAction, pendingChoice]);
+         }
+         window.addEventListener("keydown", handleKey);
+         return () => window.removeEventListener("keydown", handleKey);
+     }, [player, zones, state, gameOver, pendingAction, pendingChoice]);
 
     // Render map
     const mapRows = [];
@@ -593,42 +586,43 @@ const podvigh = () => {
                     Faith: {state.faith} &nbsp; Health: {state.health}
                 </div>
                 <div className="podvigh-messages">
-                    {messages.slice(-3).map((msg, i) => {
-                        // Split on newlines so prompt lines like 'Press G' can be styled differently
-                        const parts = String(msg).split('\n');
+                    {(() => {
+                        // combine the last few messages (and the ending if present) into one ASCII box
+                        const recent = messages.slice(-3);
+                        if (gameOver && ending) recent.push(ending);
+                        const combined = recent.join('\n\n') || '';
+                        const parts = String(combined).split('\n');
+                        const maxLine = parts.reduce((m, p) => Math.max(m, String(p).length), 0);
+                        const maxWidth = Math.min(60, Math.max(10, maxLine)); // adjust cap as desired
+                        const border = '+' + '-'.repeat(maxWidth + 2) + '+';
                         return (
-                            <div key={i} className="podvigh-message-line">
+                            <div style={{ fontFamily: "Fira Mono, monospace", whiteSpace: "pre", marginBottom: "0.25rem" }}>
+                                <div style={{ color: '#F20505' }}>{border}</div>
                                 {parts.map((part, j) => {
-                                    const trimmed = part.trim();
-                                    const isPrompt = /(^\(?Press\b)|(^\(Press)/i.test(trimmed);
-                                    // Render prompt/choice lines in red
+                                    const isPrompt = /(^\(?Press\b)|(^\(Press)/i.test(part.trim());
+                                    const safe = String(part).slice(0, maxWidth);
+                                    const line = `| ${safe.padEnd(maxWidth)} |`;
                                     return (
                                         <div key={j} style={{ color: isPrompt ? '#F20505' : undefined }}>
-                                            {part}
+                                            {line}
                                         </div>
                                     );
                                 })}
+                                <div style={{ color: '#F20505' }}>{border}</div>
                             </div>
                         );
-                    })}
-                    {gameOver && ending && (
-                        <div className="podvigh-message-line" style={{ color: "#F20505", marginTop: "1em", fontWeight: "bold" }}>
-                            {ending}
-                        </div>
-                    )}
-                </div>
-                <div className="podvigh-controls">+--------------------------------------+</div>
+                    })()}
+                 </div>
                 <div className="podvigh-controls">
-                    Goal: Find the Sanctuary by growing your Faith. Explore, pray, and survive!
+                    Goal: Find the Sanctuary by growing your Faith. Explore and survive!
                 </div>
                 <div className="podvigh-controls">
-                    Controls: Move (<b>WASD</b> / <b>Arrow keys</b>) | Pray (<b>P</b>) | Interact (<b>G</b>)
+                    Controls: Move (<b>WASD</b> / <b>Arrow keys</b>) | Interact (<b>G</b>)
                 </div>
                 {gameOver && (
                     <div className="podvigh-ending">
                     </div>
                 )}
-                <div className="podvigh-controls">+--------------------------------------+</div>
             </div>
         </div>
     );
@@ -637,6 +631,7 @@ const podvigh = () => {
 const INTERACTION_OBJECTS_BY_ZONE = {
     "Forest": forestInteractions,
     "Ruins": ruinsInteractions,
+    "Desert": desertInteractions
     // Add more as needed, e.g. "Mountains": mountainsInteractions
 };
 
